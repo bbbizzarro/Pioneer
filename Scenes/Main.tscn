@@ -1,0 +1,125 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scripts/PlayerController.cs" type="Script" id=1]
+[ext_resource path="res://Sprites/Atlas/CharacterHead.tres" type="Texture" id=2]
+[ext_resource path="res://Sprites/Atlas/CharacterBody.tres" type="Texture" id=3]
+[ext_resource path="res://Scenes/Globals.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/SpriteGroup.cs" type="Script" id=5]
+[ext_resource path="res://Sprites/Atlas/CharacterShadow.tres" type="Texture" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/Head:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -4, -11 ), Vector2( -4, -9 ), Vector2( -4, -11 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprites/Body:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprites/Shadow:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "Run"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/Head:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -4, -11 ), Vector2( -4, -17 ), Vector2( -4, -11 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprites/Body:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -6 ), Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprites/Shadow:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
+}
+
+[node name="Main" type="Node2D"]
+
+[node name="Character" type="KinematicBody2D" parent="."]
+script = ExtResource( 1 )
+_speed = 3.0
+
+[node name="SpriteGroup" type="Node2D" parent="Character"]
+script = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Character/SpriteGroup"]
+playback_speed = 4.0
+anims/Idle = SubResource( 1 )
+anims/Run = SubResource( 2 )
+
+[node name="Sprites" type="Node2D" parent="Character/SpriteGroup"]
+
+[node name="Shadow" type="Sprite" parent="Character/SpriteGroup/Sprites"]
+position = Vector2( 0, 10 )
+scale = Vector2( 1.00638, 1.00638 )
+texture = ExtResource( 6 )
+
+[node name="Back" type="Sprite" parent="Character/SpriteGroup/Sprites"]
+
+[node name="Body" type="Sprite" parent="Character/SpriteGroup/Sprites"]
+texture = ExtResource( 3 )
+
+[node name="Head" type="Sprite" parent="Character/SpriteGroup/Sprites"]
+position = Vector2( -4, -10.8724 )
+texture = ExtResource( 2 )
+
+[node name="Held" type="Sprite" parent="Character/SpriteGroup/Sprites"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
+[node name="Globals" parent="." instance=ExtResource( 4 )]
