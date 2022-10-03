@@ -13,16 +13,18 @@ public class PlayerController : KinematicBody2D {
     public override void _Process(float delta) {
         ParseInput();
         HandleAnimations();
-        FaceTowardMouse();
+        _spriteGroup.FaceTarget(GetGlobalMousePosition());
     }
 
 
     private void ParseInput() {
         HandleMovement(Input.GetVector("Left", "Right", "Up", "Down"));
+        if (Input.IsActionPressed("Attack")) HandleAttack();
     }
 
     private void HandleMovement(Vector2 direction) {
-        _velocity = _speed * Globals.PixelsPerUnit * direction;
+        float modifier = (_spriteGroup.IsAnimatingAttack()) ? 0.3f : 1f;
+        _velocity = modifier * _speed * Globals.PixelsPerUnit * direction;
         MoveAndSlide(_velocity);
     }
 
@@ -33,13 +35,7 @@ public class PlayerController : KinematicBody2D {
             _spriteGroup.AnimateIdle();
     }
 
-    private void FaceTowardMouse() {
-        var dir = GetDirectionToward(GetGlobalMousePosition());
-        if (dir.x < 0) _spriteGroup.FlipH(false);
-        else _spriteGroup.FlipH(true);
-    }
-
-    private Vector2 GetDirectionToward(Vector2 target) {
-        return (target - GlobalPosition).Normalized();
+    private void HandleAttack() {
+        _spriteGroup.AnimateAttack();
     }
 }
