@@ -16,7 +16,6 @@ public class PlayerController : KinematicBody2D {
         _spriteGroup.FaceTarget(GetGlobalMousePosition());
     }
 
-
     private void ParseInput() {
         HandleMovement(Input.GetVector("Left", "Right", "Up", "Down"));
         if (Input.IsActionPressed("Attack")) HandleAttack();

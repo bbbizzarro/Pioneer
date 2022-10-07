@@ -12,6 +12,7 @@ public class Held : Node2D {
     public override void _Ready() {
         _sprite = (Sprite)GetNode("Sprite");
         _animationPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
+        _animationPlayer.Play("HeldIdle");
     }
 
     public void RotateTowardTarget(Vector2 source, Vector2 target) {
