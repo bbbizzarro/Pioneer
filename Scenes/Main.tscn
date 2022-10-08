@@ -1,30 +1,17 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/PlayerController.cs" type="Script" id=1]
-[ext_resource path="res://Sprites/Atlas/CharacterHead.tres" type="Texture" id=2]
-[ext_resource path="res://Sprites/Atlas/CharacterBody.tres" type="Texture" id=3]
-[ext_resource path="res://Scenes/Globals.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Sprites/Atlas96x96/Head.tres" type="Texture" id=2]
+[ext_resource path="res://Sprites/Atlas96x96/Axe.tres" type="Texture" id=3]
+[ext_resource path="res://Scenes/Tree.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scripts/SpriteGroup.cs" type="Script" id=5]
-[ext_resource path="res://Sprites/Atlas/CharacterShadow.tres" type="Texture" id=6]
+[ext_resource path="res://Sprites/Atlas96x96/Shadow.tres" type="Texture" id=6]
 [ext_resource path="res://Scripts/Held.cs" type="Script" id=7]
-[ext_resource path="res://Sprites/Atlas/Axe.tres" type="Texture" id=8]
+[ext_resource path="res://Scenes/PickUp.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Animations/HumanoidIdle.tres" type="Animation" id=9]
 [ext_resource path="res://Animations/HumanoidRun.tres" type="Animation" id=10]
-[ext_resource path="res://Sprites/test48x48.png" type="Texture" id=11]
-[ext_resource path="res://Sprites/Test32x32.tres" type="Texture" id=12]
-[ext_resource path="res://Sprites/Atlas48x48.png" type="Texture" id=13]
-[ext_resource path="res://Sprites/Atlas48x48/Body.tres" type="Texture" id=14]
-[ext_resource path="res://Sprites/Atlas48x48/Shadow.tres" type="Texture" id=15]
-[ext_resource path="res://Sprites/Atlas48x48/Axe.tres" type="Texture" id=16]
-[ext_resource path="res://Sprites/Atlas48x48/Head.tres" type="Texture" id=17]
-[ext_resource path="res://Sprites/Atlas.png" type="Texture" id=18]
-[ext_resource path="res://Sprites/Atlas/Tree.tres" type="Texture" id=19]
-[ext_resource path="res://Sprites/tree.png" type="Texture" id=20]
-[ext_resource path="res://Sprites/perlin_noise.png" type="Texture" id=21]
-[ext_resource path="res://Shaders/Wind.gdshader" type="Shader" id=22]
-[ext_resource path="res://Scripts/HitBox.cs" type="Script" id=23]
 [ext_resource path="res://Scripts/HitArea.cs" type="Script" id=24]
-[ext_resource path="res://Scripts/Harvestable.cs" type="Script" id=25]
+[ext_resource path="res://Sprites/Atlas96x96/Body.tres" type="Texture" id=27]
 
 [sub_resource type="Animation" id=1]
 resource_name = "AxeAttack"
@@ -76,126 +63,20 @@ tracks/0/keys = {
 [sub_resource type="CircleShape2D" id=12]
 radius = 19.2354
 
-[sub_resource type="Animation" id=4]
-resource_name = "Idle"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Head/Head:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( -8, -15 ), Vector2( -8, -13 ), Vector2( -8, -15 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Body/Body:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Shadow:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
-}
+[sub_resource type="CircleShape2D" id=13]
+radius = 19.2354
 
-[sub_resource type="Animation" id=5]
-resource_name = "Run"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Head/Head:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( -8, -15 ), Vector2( -8, -24 ), Vector2( -8, -15 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Body/Body:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, -9 ), Vector2( 0, 0 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Shadow:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
-}
+[sub_resource type="CircleShape2D" id=14]
+radius = 135.558
 
-[sub_resource type="Animation" id=6]
-resource_name = "AxeAttack"
+[node name="Main" type="YSort"]
 
-[sub_resource type="Animation" id=7]
-resource_name = "HeldAttack"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:RotationOffset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3, 0.6, 2 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ 0.0, 1.5, 0.5, 0.0 ]
-}
+[node name="Floor" type="ParallaxBackground" parent="."]
 
-[sub_resource type="Animation" id=8]
-resource_name = "HeldIdle"
-length = 0.001
-
-[sub_resource type="ShaderMaterial" id=10]
-shader = ExtResource( 22 )
-shader_param/amount = 0.0
-shader_param/strength = 8.0
-shader_param/ycutoff = 0.7
-shader_param/speed = 1.0
-shader_param/noise_pattern = ExtResource( 21 )
-
-[sub_resource type="CapsuleShape2D" id=11]
-radius = 32.0
-height = 22.0
-
-[node name="Main" type="Node2D"]
-
-[node name="Atlas48X48" type="Sprite" parent="."]
-position = Vector2( 320, 64 )
-texture = ExtResource( 13 )
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.94902, 0.772549, 0.6, 1 )
 
 [node name="Character" type="KinematicBody2D" parent="."]
 script = ExtResource( 1 )
@@ -221,13 +102,13 @@ texture = ExtResource( 6 )
 [node name="Body" type="Node2D" parent="Character/SpriteGroup" groups=["Flippable"]]
 
 [node name="Body" type="Sprite" parent="Character/SpriteGroup/Body"]
-texture = ExtResource( 3 )
+texture = ExtResource( 27 )
 
 [node name="Held" type="Node2D" parent="Character/SpriteGroup"]
-position = Vector2( -46, -20 )
+position = Vector2( -44, -20 )
 script = ExtResource( 7 )
 Origin = Vector2( 0, -20 )
-Radius = 46.0
+Radius = 44.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Character/SpriteGroup/Held"]
 playback_speed = 4.0
@@ -236,7 +117,7 @@ anims/HeldAttack = SubResource( 2 )
 anims/HeldIdle = SubResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="Character/SpriteGroup/Held"]
-texture = ExtResource( 8 )
+texture = ExtResource( 3 )
 
 [node name="HitArea" type="Area2D" parent="Character/SpriteGroup/Held/Sprite"]
 position = Vector2( -20, -13 )
@@ -253,157 +134,32 @@ shape = SubResource( 12 )
 [node name="Head" type="Node2D" parent="Character/SpriteGroup" groups=["Flippable"]]
 
 [node name="Head" type="Sprite" parent="Character/SpriteGroup/Head"]
-position = Vector2( -8, -22 )
+position = Vector2( -8, -20 )
 texture = ExtResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="Character"]
 current = true
 smoothing_enabled = true
 
-[node name="Character2" type="KinematicBody2D" parent="."]
-visible = false
-script = ExtResource( 1 )
-_speed = 5.0
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character"]
+position = Vector2( -2, 10 )
+shape = SubResource( 13 )
 
-[node name="SpriteGroup" type="Node2D" parent="Character2"]
-script = ExtResource( 5 )
+[node name="Sensor" type="Area2D" parent="Character"]
+collision_layer = 4
+collision_mask = 4
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Character2/SpriteGroup"]
-playback_default_blend_time = 0.2
-playback_speed = 4.0
-anims/Idle = SubResource( 4 )
-anims/Run = SubResource( 5 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/Sensor"]
+shape = SubResource( 14 )
 
-[node name="Shadow" type="Sprite" parent="Character2/SpriteGroup"]
-position = Vector2( 0, 18 )
-texture = ExtResource( 15 )
+[node name="Tree" parent="." instance=ExtResource( 4 )]
 
-[node name="Back" type="Node2D" parent="Character2/SpriteGroup" groups=["Flippable"]]
-
-[node name="Back" type="Sprite" parent="Character2/SpriteGroup/Back"]
-
-[node name="Body" type="Node2D" parent="Character2/SpriteGroup" groups=["Flippable"]]
-
-[node name="Body" type="Sprite" parent="Character2/SpriteGroup/Body"]
-texture = ExtResource( 14 )
-
-[node name="Held" type="Node2D" parent="Character2/SpriteGroup"]
-position = Vector2( -35, -15 )
-script = ExtResource( 7 )
-Origin = Vector2( 0, -15 )
-Radius = 35.0
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Character2/SpriteGroup/Held"]
-playback_speed = 5.0
-anims/AxeAttack = SubResource( 6 )
-anims/HeldAttack = SubResource( 7 )
-anims/HeldIdle = SubResource( 8 )
-
-[node name="Sprite" type="Sprite" parent="Character2/SpriteGroup/Held"]
-texture = ExtResource( 16 )
-
-[node name="Head" type="Node2D" parent="Character2/SpriteGroup" groups=["Flippable"]]
-
-[node name="Head" type="Sprite" parent="Character2/SpriteGroup/Head"]
-position = Vector2( -8, -15 )
-texture = ExtResource( 17 )
-
-[node name="Globals" parent="." instance=ExtResource( 4 )]
-
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 1360, 436 )
-texture = ExtResource( 8 )
-
-[node name="Sprite2" type="Sprite" parent="."]
-position = Vector2( 2596, 649 )
-texture = ExtResource( 8 )
-
-[node name="Test48X48" type="Sprite" parent="."]
-position = Vector2( 64, 320 )
-texture = ExtResource( 11 )
-
-[node name="Test32X32" type="Sprite" parent="."]
-position = Vector2( 192, 128 )
-texture = ExtResource( 12 )
-
-[node name="Atlas" type="Sprite" parent="."]
-position = Vector2( -320, 64 )
-texture = ExtResource( 18 )
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.94902, 0.772549, 0.6, 1 )
-
-[node name="TreeObject" type="Node2D" parent="."]
-position = Vector2( 0, -288 )
-script = ExtResource( 25 )
-
-[node name="Sprite" type="Sprite" parent="TreeObject"]
-material = SubResource( 10 )
-texture = ExtResource( 20 )
-
-[node name="HitBox" type="Area2D" parent="TreeObject" groups=["Targetable"]]
-collision_layer = 2
-collision_mask = 0
-monitoring = false
-script = ExtResource( 23 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TreeObject/HitBox"]
-shape = SubResource( 11 )
-
-[node name="Timer" type="Timer" parent="TreeObject"]
-
-[node name="TreeObject2" type="Node2D" parent="."]
+[node name="Tree2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 96, -288 )
-script = ExtResource( 25 )
 
-[node name="Sprite" type="Sprite" parent="TreeObject2"]
-material = SubResource( 10 )
-texture = ExtResource( 20 )
+[node name="Tree3" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -384 )
 
-[node name="HitBox" type="Area2D" parent="TreeObject2" groups=["Targetable"]]
-collision_layer = 2
-collision_mask = 0
-monitoring = false
-script = ExtResource( 23 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TreeObject2/HitBox"]
-shape = SubResource( 11 )
-
-[node name="Timer" type="Timer" parent="TreeObject2"]
-
-[node name="TreeObject3" type="Node2D" parent="."]
-position = Vector2( 96, -384 )
-script = ExtResource( 25 )
-
-[node name="Sprite" type="Sprite" parent="TreeObject3"]
-material = SubResource( 10 )
-texture = ExtResource( 20 )
-
-[node name="HitBox" type="Area2D" parent="TreeObject3" groups=["Targetable"]]
-collision_layer = 2
-collision_mask = 0
-monitoring = false
-script = ExtResource( 23 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TreeObject3/HitBox"]
-shape = SubResource( 11 )
-
-[node name="Timer" type="Timer" parent="TreeObject3"]
-
-[node name="Tree3" type="Node2D" parent="."]
-visible = false
-position = Vector2( 0, -320 )
-
-[node name="Sprite" type="Sprite" parent="Tree3"]
-texture = ExtResource( 19 )
-
-[node name="Tree" type="Node2D" parent="."]
-visible = false
-position = Vector2( 0, -256 )
-
-[node name="Sprite" type="Sprite" parent="Tree"]
-texture = ExtResource( 19 )
+[node name="PickUp" parent="." instance=ExtResource( 8 )]
+position = Vector2( 143, -80 )
+MoveSpeed = 8.0
