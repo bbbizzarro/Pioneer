@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Scripts/PlayerController.cs" type="Script" id=1]
 [ext_resource path="res://Sprites/Atlas96x96/Head.tres" type="Texture" id=2]
@@ -10,6 +10,11 @@
 [ext_resource path="res://Scenes/PickUp.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Animations/HumanoidIdle.tres" type="Animation" id=9]
 [ext_resource path="res://Animations/HumanoidRun.tres" type="Animation" id=10]
+[ext_resource path="res://Sprites/Atlas96x96/Backpack.tres" type="Texture" id=11]
+[ext_resource path="res://Sprites/AtlasUI/SlotUI.tres" type="Texture" id=12]
+[ext_resource path="res://Sprites/AtlasUI/ItemUI.tres" type="Texture" id=13]
+[ext_resource path="res://Fonts/Varela_Round/ValeraRound.tres" type="DynamicFont" id=14]
+[ext_resource path="res://Sprites/Atlas96x96/Log.tres" type="Texture" id=15]
 [ext_resource path="res://Scripts/HitArea.cs" type="Script" id=24]
 [ext_resource path="res://Sprites/Atlas96x96/Body.tres" type="Texture" id=27]
 
@@ -69,6 +74,10 @@ radius = 19.2354
 [sub_resource type="CircleShape2D" id=14]
 radius = 135.558
 
+[sub_resource type="Theme" id=15]
+default_font = ExtResource( 14 )
+/fonts/Font = null
+
 [node name="Main" type="YSort"]
 
 [node name="Floor" type="ParallaxBackground" parent="."]
@@ -100,6 +109,10 @@ texture = ExtResource( 6 )
 [node name="Back" type="Sprite" parent="Character/SpriteGroup/Back"]
 
 [node name="Body" type="Node2D" parent="Character/SpriteGroup" groups=["Flippable"]]
+
+[node name="Back" type="Sprite" parent="Character/SpriteGroup/Body"]
+position = Vector2( 7, -19 )
+texture = ExtResource( 11 )
 
 [node name="Body" type="Sprite" parent="Character/SpriteGroup/Body"]
 texture = ExtResource( 27 )
@@ -163,3 +176,99 @@ position = Vector2( 0, -384 )
 [node name="PickUp" parent="." instance=ExtResource( 8 )]
 position = Vector2( 143, -80 )
 MoveSpeed = 8.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer"]
+margin_right = 1880.0
+margin_bottom = 1040.0
+alignment = 2
+
+[node name="GridContainer" type="GridContainer" parent="UI/MarginContainer/VBoxContainer"]
+margin_left = 595.0
+margin_top = 945.0
+margin_right = 1284.0
+margin_bottom = 1040.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 8
+
+[node name="Slot" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+margin_right = 95.0
+margin_bottom = 95.0
+texture = ExtResource( 12 )
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/MarginContainer/VBoxContainer/GridContainer/Slot"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ItemImage" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer/Slot/CenterContainer"]
+margin_left = 12.0
+margin_top = 18.0
+margin_right = 82.0
+margin_bottom = 77.0
+texture = ExtResource( 13 )
+
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/GridContainer/Slot"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -51.0
+margin_top = -35.0
+theme = SubResource( 15 )
+text = "x99"
+
+[node name="TextureRect2" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 99.0
+margin_right = 194.0
+margin_bottom = 95.0
+texture = ExtResource( 12 )
+
+[node name="TextureRect3" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 198.0
+margin_right = 293.0
+margin_bottom = 95.0
+texture = ExtResource( 12 )
+
+[node name="TextureRect4" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 297.0
+margin_right = 392.0
+margin_bottom = 95.0
+texture = ExtResource( 12 )
+
+[node name="TextureRect5" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 396.0
+margin_right = 491.0
+margin_bottom = 95.0
+texture = ExtResource( 12 )
+
+[node name="TextureRect6" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 495.0
+margin_right = 590.0
+margin_bottom = 95.0
+texture = ExtResource( 12 )
+
+[node name="TextureRect7" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 594.0
+margin_right = 689.0
+margin_bottom = 95.0
+texture = ExtResource( 12 )
+
+[node name="ItemUi" type="Sprite" parent="."]
+position = Vector2( -246, -207 )
+texture = ExtResource( 13 )
+
+[node name="Log" type="Sprite" parent="."]
+position = Vector2( -370, -204 )
+texture = ExtResource( 15 )
