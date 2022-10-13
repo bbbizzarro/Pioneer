@@ -5,20 +5,35 @@ public class PlayerController : KinematicBody2D {
     [Export] float _speed;
     SpriteGroup _spriteGroup;
     Vector2 _velocity;
+    bool _isInputPaused;
+    Inventory _inventory;
+    Sensor _Sensor;
 
     public override void _Ready() {
         _spriteGroup = (SpriteGroup)GetNode("SpriteGroup");
+        _Sensor = (Sensor)GetNode("Sensor");
+        _Sensor.ItemPickupEvent += HandleItemPickup;
+        _inventory = new Inventory(8);
     }
 
     public override void _Process(float delta) {
         ParseInput();
         HandleAnimations();
-        _spriteGroup.FaceTarget(GetGlobalMousePosition());
+    }
+
+    public void HandleItemPickup(string id, int count) {
+        _inventory.Add(id, count);
     }
 
     private void ParseInput() {
+        if (Input.IsActionJustPressed("Inventory")) _isInputPaused = !_isInputPaused;
+        if (_isInputPaused) {
+            HandleMovement(Vector2.Zero);
+            return;
+        }
         HandleMovement(Input.GetVector("Left", "Right", "Up", "Down"));
         if (Input.IsActionPressed("Attack")) HandleAttack();
+        _spriteGroup.FaceTarget(GetGlobalMousePosition());
     }
 
     private void HandleMovement(Vector2 direction) {

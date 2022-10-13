@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scripts/PlayerController.cs" type="Script" id=1]
 [ext_resource path="res://Sprites/Atlas96x96/Head.tres" type="Texture" id=2]
@@ -7,14 +7,17 @@
 [ext_resource path="res://Scripts/SpriteGroup.cs" type="Script" id=5]
 [ext_resource path="res://Sprites/Atlas96x96/Shadow.tres" type="Texture" id=6]
 [ext_resource path="res://Scripts/Held.cs" type="Script" id=7]
-[ext_resource path="res://Scenes/PickUp.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scripts/Sensor.cs" type="Script" id=8]
 [ext_resource path="res://Animations/HumanoidIdle.tres" type="Animation" id=9]
 [ext_resource path="res://Animations/HumanoidRun.tres" type="Animation" id=10]
 [ext_resource path="res://Sprites/Atlas96x96/Backpack.tres" type="Texture" id=11]
 [ext_resource path="res://Sprites/AtlasUI/SlotUI.tres" type="Texture" id=12]
 [ext_resource path="res://Sprites/AtlasUI/ItemUI.tres" type="Texture" id=13]
 [ext_resource path="res://Fonts/Varela_Round/ValeraRound.tres" type="DynamicFont" id=14]
-[ext_resource path="res://Sprites/Atlas96x96/Log.tres" type="Texture" id=15]
+[ext_resource path="res://Scripts/ItemUI.cs" type="Script" id=16]
+[ext_resource path="res://Scripts/Hotbar.cs" type="Script" id=17]
+[ext_resource path="res://Scripts/UI.cs" type="Script" id=18]
+[ext_resource path="res://Scripts/Game.cs" type="Script" id=19]
 [ext_resource path="res://Scripts/HitArea.cs" type="Script" id=24]
 [ext_resource path="res://Sprites/Atlas96x96/Body.tres" type="Texture" id=27]
 
@@ -78,61 +81,66 @@ radius = 135.558
 default_font = ExtResource( 14 )
 /fonts/Font = null
 
-[node name="Main" type="YSort"]
+[node name="Main" type="Node2D"]
+pause_mode = 2
+script = ExtResource( 19 )
 
-[node name="Floor" type="ParallaxBackground" parent="."]
+[node name="World" type="YSort" parent="."]
+pause_mode = 1
 
-[node name="ColorRect" type="ColorRect" parent="Floor"]
+[node name="Floor" type="ParallaxBackground" parent="World"]
+
+[node name="ColorRect" type="ColorRect" parent="World/Floor"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.94902, 0.772549, 0.6, 1 )
 
-[node name="Character" type="KinematicBody2D" parent="."]
+[node name="Character" type="KinematicBody2D" parent="World"]
 script = ExtResource( 1 )
 _speed = 3.5
 
-[node name="SpriteGroup" type="Node2D" parent="Character"]
+[node name="SpriteGroup" type="Node2D" parent="World/Character"]
 script = ExtResource( 5 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Character/SpriteGroup"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="World/Character/SpriteGroup"]
 playback_default_blend_time = 0.2
 playback_speed = 4.0
 anims/Idle = ExtResource( 9 )
 anims/Run = ExtResource( 10 )
 
-[node name="Shadow" type="Sprite" parent="Character/SpriteGroup"]
+[node name="Shadow" type="Sprite" parent="World/Character/SpriteGroup"]
 position = Vector2( 0, 16 )
 texture = ExtResource( 6 )
 
-[node name="Back" type="Node2D" parent="Character/SpriteGroup" groups=["Flippable"]]
+[node name="Back" type="Node2D" parent="World/Character/SpriteGroup" groups=["Flippable"]]
 
-[node name="Back" type="Sprite" parent="Character/SpriteGroup/Back"]
+[node name="Back" type="Sprite" parent="World/Character/SpriteGroup/Back"]
 
-[node name="Body" type="Node2D" parent="Character/SpriteGroup" groups=["Flippable"]]
+[node name="Body" type="Node2D" parent="World/Character/SpriteGroup" groups=["Flippable"]]
 
-[node name="Back" type="Sprite" parent="Character/SpriteGroup/Body"]
+[node name="Back" type="Sprite" parent="World/Character/SpriteGroup/Body"]
 position = Vector2( 7, -19 )
 texture = ExtResource( 11 )
 
-[node name="Body" type="Sprite" parent="Character/SpriteGroup/Body"]
+[node name="Body" type="Sprite" parent="World/Character/SpriteGroup/Body"]
 texture = ExtResource( 27 )
 
-[node name="Held" type="Node2D" parent="Character/SpriteGroup"]
+[node name="Held" type="Node2D" parent="World/Character/SpriteGroup"]
 position = Vector2( -44, -20 )
 script = ExtResource( 7 )
 Origin = Vector2( 0, -20 )
 Radius = 44.0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Character/SpriteGroup/Held"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="World/Character/SpriteGroup/Held"]
 playback_speed = 4.0
 anims/AxeAttack = SubResource( 1 )
 anims/HeldAttack = SubResource( 2 )
 anims/HeldIdle = SubResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="Character/SpriteGroup/Held"]
+[node name="Sprite" type="Sprite" parent="World/Character/SpriteGroup/Held"]
 texture = ExtResource( 3 )
 
-[node name="HitArea" type="Area2D" parent="Character/SpriteGroup/Held/Sprite"]
+[node name="HitArea" type="Area2D" parent="World/Character/SpriteGroup/Held/Sprite"]
 position = Vector2( -20, -13 )
 collision_layer = 0
 collision_mask = 2
@@ -140,44 +148,44 @@ monitoring = false
 monitorable = false
 script = ExtResource( 24 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/SpriteGroup/Held/Sprite/HitArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Character/SpriteGroup/Held/Sprite/HitArea"]
 position = Vector2( 0, 4 )
 shape = SubResource( 12 )
 
-[node name="Head" type="Node2D" parent="Character/SpriteGroup" groups=["Flippable"]]
+[node name="Head" type="Node2D" parent="World/Character/SpriteGroup" groups=["Flippable"]]
 
-[node name="Head" type="Sprite" parent="Character/SpriteGroup/Head"]
+[node name="Head" type="Sprite" parent="World/Character/SpriteGroup/Head"]
 position = Vector2( -8, -20 )
 texture = ExtResource( 2 )
 
-[node name="Camera2D" type="Camera2D" parent="Character"]
+[node name="Camera2D" type="Camera2D" parent="World/Character"]
 current = true
 smoothing_enabled = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Character"]
+[node name="WorldCollisionBox" type="CollisionShape2D" parent="World/Character"]
 position = Vector2( -2, 10 )
 shape = SubResource( 13 )
 
-[node name="Sensor" type="Area2D" parent="Character"]
+[node name="Sensor" type="Area2D" parent="World/Character"]
 collision_layer = 4
 collision_mask = 4
+script = ExtResource( 8 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/Sensor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Character/Sensor"]
 shape = SubResource( 14 )
 
-[node name="Tree" parent="." instance=ExtResource( 4 )]
+[node name="Tree" parent="World" instance=ExtResource( 4 )]
 
-[node name="Tree2" parent="." instance=ExtResource( 4 )]
+[node name="Tree2" parent="World" instance=ExtResource( 4 )]
 position = Vector2( 96, -288 )
 
-[node name="Tree3" parent="." instance=ExtResource( 4 )]
+[node name="Tree3" parent="World" instance=ExtResource( 4 )]
 position = Vector2( 0, -384 )
 
-[node name="PickUp" parent="." instance=ExtResource( 8 )]
-position = Vector2( 143, -80 )
-MoveSpeed = 8.0
-
 [node name="UI" type="CanvasLayer" parent="."]
+pause_mode = 2
+script = ExtResource( 18 )
+HotbarPath = NodePath("MarginContainer/HotbarContainer/Hotbar")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 anchor_right = 1.0
@@ -186,15 +194,16 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = -20.0
 margin_bottom = -20.0
+mouse_filter = 1
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer"]
+[node name="HotbarContainer" type="VBoxContainer" parent="UI/MarginContainer"]
 margin_right = 1880.0
 margin_bottom = 1040.0
 alignment = 2
 
-[node name="GridContainer" type="GridContainer" parent="UI/MarginContainer/VBoxContainer"]
+[node name="Hotbar" type="GridContainer" parent="UI/MarginContainer/HotbarContainer"]
 margin_left = 595.0
 margin_top = 945.0
 margin_right = 1284.0
@@ -202,73 +211,75 @@ margin_bottom = 1040.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 columns = 8
+script = ExtResource( 17 )
 
-[node name="Slot" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+[node name="SlotUI" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/Hotbar"]
 margin_right = 95.0
 margin_bottom = 95.0
 texture = ExtResource( 12 )
 
-[node name="CenterContainer" type="CenterContainer" parent="UI/MarginContainer/VBoxContainer/GridContainer/Slot"]
+[node name="ItemUI" type="Control" parent="UI/MarginContainer/HotbarContainer/Hotbar/SlotUI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+script = ExtResource( 16 )
 
-[node name="ItemImage" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer/Slot/CenterContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="UI/MarginContainer/HotbarContainer/Hotbar/SlotUI/ItemUI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="ItemImage" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/Hotbar/SlotUI/ItemUI/CenterContainer"]
 margin_left = 12.0
 margin_top = 18.0
 margin_right = 82.0
 margin_bottom = 77.0
+mouse_filter = 2
 texture = ExtResource( 13 )
 
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/GridContainer/Slot"]
+[node name="Label" type="Label" parent="UI/MarginContainer/HotbarContainer/Hotbar/SlotUI/ItemUI"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -51.0
+margin_left = -36.0
 margin_top = -35.0
 theme = SubResource( 15 )
-text = "x99"
+text = "99"
 
-[node name="TextureRect2" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+[node name="TextureRect2" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/Hotbar"]
 margin_left = 99.0
 margin_right = 194.0
 margin_bottom = 95.0
 texture = ExtResource( 12 )
 
-[node name="TextureRect3" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+[node name="TextureRect3" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/Hotbar"]
 margin_left = 198.0
 margin_right = 293.0
 margin_bottom = 95.0
 texture = ExtResource( 12 )
 
-[node name="TextureRect4" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+[node name="TextureRect4" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/Hotbar"]
 margin_left = 297.0
 margin_right = 392.0
 margin_bottom = 95.0
 texture = ExtResource( 12 )
 
-[node name="TextureRect5" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+[node name="TextureRect5" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/Hotbar"]
 margin_left = 396.0
 margin_right = 491.0
 margin_bottom = 95.0
 texture = ExtResource( 12 )
 
-[node name="TextureRect6" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+[node name="TextureRect6" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/Hotbar"]
 margin_left = 495.0
 margin_right = 590.0
 margin_bottom = 95.0
 texture = ExtResource( 12 )
 
-[node name="TextureRect7" type="TextureRect" parent="UI/MarginContainer/VBoxContainer/GridContainer"]
+[node name="TextureRect7" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/Hotbar"]
 margin_left = 594.0
 margin_right = 689.0
 margin_bottom = 95.0
 texture = ExtResource( 12 )
-
-[node name="ItemUi" type="Sprite" parent="."]
-position = Vector2( -246, -207 )
-texture = ExtResource( 13 )
-
-[node name="Log" type="Sprite" parent="."]
-position = Vector2( -370, -204 )
-texture = ExtResource( 15 )

@@ -9,7 +9,7 @@ public class PickUp : KinematicBody2D {
     [Export] float MoveSpeed = 1f;
     [Export] float PickUpDistance = 0.1f;
     RandomNumberGenerator _rng = new RandomNumberGenerator();
-    Node2D _target;
+    Sensor _target;
 
     Physics2D physics2D;
     Sprite _sprite;
@@ -37,7 +37,7 @@ public class PickUp : KinematicBody2D {
 
     public void HandleTargeting(Area2D newTarget) {
         if (_target == null && newTarget != null) {
-            _target = newTarget;
+            _target = (Sensor)newTarget;
         }
     }
 
@@ -67,6 +67,7 @@ public class PickUp : KinematicBody2D {
             MoveAndSlide(MoveSpeed * Globals.PixelsPerUnit * diff.Normalized());
             _sprite.Scale = new Vector2(newScale, newScale);
             if (diff.Length() < PickUpDistance * Globals.PixelsPerUnit) {
+                _target.HandleItemPickup("Wood", 1);
                 QueueFree();
             }
         }
