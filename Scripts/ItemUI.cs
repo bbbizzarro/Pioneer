@@ -10,12 +10,34 @@ public class ItemUI : Control {
     bool _isDragging;
     bool _isActive;
     Vector2 offset;
+    Control _itemImage;
+    Label _itemCount;
+    TextureRect _textureRect;
+    string _currentSprite;
 
     public override void _Ready() {
         base._Ready();
         Connect("mouse_entered", this, nameof(HandleMouseEnter));
         Connect("mouse_exited", this, nameof(HandleMouseExit));
         offset = new Vector2(RectSize.x / 2, RectSize.y / 2);
+        _textureRect = (TextureRect)GetNode("ItemUI/CenterContainer/ItemImage");
+        _itemCount = (Label)GetNode("ItemUI/Label");
+        _itemImage = (Control)GetNode("ItemUI");
+        _itemImage.Visible = false;
+    }
+
+    public void Set(string name, int count) {
+        _itemImage.Visible = true;
+        _itemCount.Text = count.ToString();
+        if (_currentSprite != name) {
+            GD.Print("loading new sprite");
+            _currentSprite = name;
+            _textureRect.Texture = SpriteDB.Instance.GetSprite(name);
+        }
+    }
+
+    public void UnSet() {
+        _itemImage.Visible = false;
     }
 
     public override void _Process(float delta) {

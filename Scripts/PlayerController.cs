@@ -6,14 +6,14 @@ public class PlayerController : KinematicBody2D {
     SpriteGroup _spriteGroup;
     Vector2 _velocity;
     bool _isInputPaused;
-    Inventory _inventory;
+    public Inventory Inventory {private set; get;}
     Sensor _Sensor;
 
     public override void _Ready() {
         _spriteGroup = (SpriteGroup)GetNode("SpriteGroup");
         _Sensor = (Sensor)GetNode("Sensor");
         _Sensor.ItemPickupEvent += HandleItemPickup;
-        _inventory = new Inventory(8);
+        Inventory = new Inventory(8);
     }
 
     public override void _Process(float delta) {
@@ -22,7 +22,8 @@ public class PlayerController : KinematicBody2D {
     }
 
     public void HandleItemPickup(string id, int count) {
-        _inventory.Add(id, count);
+        Inventory.Add(id, count);
+        Inventory.Update();
     }
 
     private void ParseInput() {

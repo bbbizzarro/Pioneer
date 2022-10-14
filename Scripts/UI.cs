@@ -5,13 +5,20 @@ public class UI : CanvasLayer {
     [Export] NodePath HotbarPath;
 
     Hotbar _hotbar;
+    Inventory _inventory;
 
     public override void _Ready() {
         LoadHotbar();
     }
 
+    public void SetInventory(Inventory inventory) {
+        _inventory = inventory;
+        _inventory.UpdatedEvent += UpdateInventoryUI;
+    }
+
     public void UpdateInventoryUI() {
         GD.Print("Updating inventory.");
+        _hotbar.Set(_inventory.GetSlots());
     }
 
     private void LoadHotbar() {

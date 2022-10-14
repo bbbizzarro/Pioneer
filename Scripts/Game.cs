@@ -9,6 +9,7 @@ public class Game : Node {
     public override void _Ready() {
         _player = (PlayerController)GetNode("World/Character");
         _ui = (UI)GetNode("UI");
+        _ui.SetInventory(_player.Inventory);
     }
 
     public override void _Process(float delta) {
@@ -17,4 +18,5 @@ public class Game : Node {
             GetTree().Paused = !GetTree().Paused;
         }
     }
+
 }

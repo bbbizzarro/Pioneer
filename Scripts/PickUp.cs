@@ -67,7 +67,7 @@ public class PickUp : KinematicBody2D {
             MoveAndSlide(MoveSpeed * Globals.PixelsPerUnit * diff.Normalized());
             _sprite.Scale = new Vector2(newScale, newScale);
             if (diff.Length() < PickUpDistance * Globals.PixelsPerUnit) {
-                _target.HandleItemPickup("Wood", 1);
+                _target.HandleItemPickup("Log", 1);
                 QueueFree();
             }
         }

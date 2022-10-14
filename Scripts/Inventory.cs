@@ -3,8 +3,10 @@ using System.Linq;
 using System;
 using Godot;
 
+public delegate void InventoryEventHandler();
 public class Inventory {
 
+    public event InventoryEventHandler UpdatedEvent;
     int _capacity;
     int _count;
     ItemStack[] _items;
@@ -17,11 +19,23 @@ public class Inventory {
         }
     }
 
+    public void Update() {
+        UpdatedEvent?.Invoke();
+    }
+
     public ItemStack Get(string name) {
         foreach (ItemStack itemStack in _items) {
             if (itemStack.ID == name) return itemStack;
         }
         return ItemStack.EmptyStack();
+    }
+
+    private Tuple<int, ItemStack> GetPosition(string name) {
+        for (int i = 0; i < _capacity; ++i) {
+            if (_items[i].ID == name) 
+                return new Tuple<int, ItemStack>(i, _items[i]);
+        }
+        return new Tuple<int, ItemStack>(-1, ItemStack.EmptyStack());
     }
 
     public bool HasItem(string name, int count) {
@@ -58,10 +72,12 @@ public class Inventory {
     }
 
     public bool Add(string item, int count) {
-        GD.Print(String.Format("Adding {0} x{1} to inventory", item, count));
         // Do we already have a slot with the item?
         ItemStack itemStack = Get(item);
-        if (!itemStack.IsEmpty()) itemStack.Count += count;
+        if (!itemStack.IsEmpty()) {
+            itemStack.Count += count;
+            return true;
+        }
         // Or can we reserve a new slot?
         if (_count >= _capacity) return false;
         ItemStack openSlot = GetOpenSlot();
@@ -71,6 +87,16 @@ public class Inventory {
             return true;
         }
         return false;
+    }
+
+    public void Move(string item, int position) {
+        var pair = GetPosition(item);
+        int itemPos = pair.Item1;
+        ItemStack itemStack = pair.Item2;
+        if (itemStack.IsEmpty() || position >= _capacity) return;
+        ItemStack temp = _items[position];
+        _items[position] = itemStack;
+        _items[itemPos] = temp;
     }
 
     private ItemStack GetOpenSlot() {
@@ -86,7 +112,10 @@ public class Inventory {
         ItemStack slot = Get(ID);
         if (!slot.IsEmpty() && slot.Count >= count) {
             slot.Count -= count;
-            if (slot.Count <= 0) slot.SetEmpty();
+            if (slot.Count <= 0) {
+                slot.SetEmpty();
+                _count -= 1;
+            }
             return true;
         }
         return false;
