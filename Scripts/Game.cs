@@ -8,6 +8,7 @@ public class Game : Node {
 
     public override void _Ready() {
         _player = (PlayerController)GetNode("World/Character");
+        _player.Inventory.Add("Axe", 1);
         _ui = (UI)GetNode("UI");
         _ui.SetInventory(_player.Inventory);
     }

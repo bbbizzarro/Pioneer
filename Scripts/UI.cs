@@ -14,11 +14,12 @@ public class UI : CanvasLayer {
     public void SetInventory(Inventory inventory) {
         _inventory = inventory;
         _inventory.UpdatedEvent += UpdateInventoryUI;
+        UpdateInventoryUI();
     }
 
     public void UpdateInventoryUI() {
         GD.Print("Updating inventory.");
-        _hotbar.Set(_inventory.GetSlots());
+        _hotbar.Set(_inventory);
     }
 
     private void LoadHotbar() {

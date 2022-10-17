@@ -30,6 +30,13 @@ public class Inventory {
         return ItemStack.EmptyStack();
     }
 
+    public ItemStack Get(int position) {
+        if (position < 0 || position >= _capacity) {
+            return ItemStack.EmptyStack();
+        }
+        return _items[position];
+    }
+
     private Tuple<int, ItemStack> GetPosition(string name) {
         for (int i = 0; i < _capacity; ++i) {
             if (_items[i].ID == name) 
@@ -87,6 +94,15 @@ public class Inventory {
             return true;
         }
         return false;
+    }
+
+    public void Swap(int positionA, int positionB) {
+        if (positionA >= 0 && positionB >= 0 && positionA < _capacity && positionB < _capacity) {
+            var itemA = _items[positionA];
+            _items[positionA] = _items[positionB];
+            _items[positionB] = itemA;
+            GD.Print("Swap success.");
+        }
     }
 
     public void Move(string item, int position) {
