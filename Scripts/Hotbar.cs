@@ -8,6 +8,11 @@ public class Hotbar : GridContainer {
 
     public override void _Ready() {
         base._Ready();
+        SetupItemUI();
+    }
+
+    private void SetupItemUI() {
+        // Give slots a reference to main UI node for previewing drag.
         foreach (var node in GetChildren()) {
             var slot = (ItemUI)node;
             _itemSlots.Add(slot);

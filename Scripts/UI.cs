@@ -2,12 +2,20 @@ using Godot;
 using System;
 
 public class UI : CanvasLayer {
+    public static UI Instance;
+
     [Export] NodePath HotbarPath;
 
     Hotbar _hotbar;
+    Control _inventoryUI;
     Inventory _inventory;
 
     public override void _Ready() {
+        if (Instance != null) {
+            QueueFree();
+            return;
+        }
+        Instance = this;
         LoadHotbar();
     }
 
@@ -20,6 +28,15 @@ public class UI : CanvasLayer {
     public void UpdateInventoryUI() {
         GD.Print("Updating inventory.");
         _hotbar.Set(_inventory);
+    }
+
+    private void LoadInventoryUI() {
+        try {
+            _inventoryUI = (Control)GetNode("InventoryContainer");
+        }
+        catch {
+            GD.PrintErr("Could not find Inventory UI");
+        }
     }
 
     private void LoadHotbar() {

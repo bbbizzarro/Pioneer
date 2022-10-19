@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Scripts/PlayerController.cs" type="Script" id=1]
 [ext_resource path="res://Sprites/Atlas96x96/Head.tres" type="Texture" id=2]
@@ -11,13 +11,16 @@
 [ext_resource path="res://Animations/HumanoidIdle.tres" type="Animation" id=9]
 [ext_resource path="res://Animations/HumanoidRun.tres" type="Animation" id=10]
 [ext_resource path="res://Sprites/Atlas96x96/Backpack.tres" type="Texture" id=11]
-[ext_resource path="res://Sprites/AtlasUI/SlotUI.tres" type="Texture" id=12]
+[ext_resource path="res://Sprites/Atlas96x96.png" type="Texture" id=12]
 [ext_resource path="res://Scenes/SlotUI.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scripts/InventoryContainer.cs" type="Script" id=14]
 [ext_resource path="res://Scripts/SpriteDB.cs" type="Script" id=15]
+[ext_resource path="res://Sprites/Atlas96x96/Panel.tres" type="Texture" id=16]
 [ext_resource path="res://Scripts/Hotbar.cs" type="Script" id=17]
 [ext_resource path="res://Scripts/UI.cs" type="Script" id=18]
 [ext_resource path="res://Scripts/Game.cs" type="Script" id=19]
 [ext_resource path="res://Sprites/Atlas96x96/Particle.tres" type="Texture" id=20]
+[ext_resource path="res://Sprites/TileAtlas.png" type="Texture" id=21]
 [ext_resource path="res://Scripts/HitArea.cs" type="Script" id=24]
 [ext_resource path="res://Sprites/Atlas96x96/Body.tres" type="Texture" id=27]
 
@@ -76,6 +79,92 @@ radius = 19.2354
 
 [sub_resource type="CircleShape2D" id=14]
 radius = 135.558
+
+[sub_resource type="TileSet" id=15]
+0/name = "Atlas96x96.png 0"
+0/texture = ExtResource( 12 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 116, 58, 159, 47 )
+0/tile_mode = 2
+0/autotile/icon_coordinate = Vector2( 0, 0 )
+0/autotile/tile_size = Vector2( 32, 32 )
+0/autotile/spacing = 0
+0/autotile/occluder_map = [  ]
+0/autotile/navpoly_map = [  ]
+0/autotile/priority_map = [  ]
+0/autotile/z_index_map = [  ]
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "Atlas96x96.png 1"
+1/texture = ExtResource( 12 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 64, 0, 352, 128 )
+1/tile_mode = 2
+1/autotile/icon_coordinate = Vector2( 0, 0 )
+1/autotile/tile_size = Vector2( 32, 32 )
+1/autotile/spacing = 0
+1/autotile/occluder_map = [  ]
+1/autotile/navpoly_map = [  ]
+1/autotile/priority_map = [  ]
+1/autotile/z_index_map = [  ]
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "RedTile"
+2/texture = ExtResource( 12 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 192, 672, 96, 96 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+3/name = "TileAtlas.png 3"
+3/texture = ExtResource( 21 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 196, 686, 98, 98 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape_one_way = false
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
+3/z_index = 0
+4/name = "TileAtlas.png 4"
+4/texture = ExtResource( 21 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 392, 686, 98, 98 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
 
 [node name="Main" type="Node2D"]
 pause_mode = 2
@@ -184,12 +273,22 @@ position = Vector2( 96, -288 )
 [node name="Tree3" parent="World" instance=ExtResource( 4 )]
 position = Vector2( 0, -384 )
 
+[node name="TileMaps" type="Node2D" parent="."]
+
+[node name="Walls" type="TileMap" parent="TileMaps"]
+tile_set = SubResource( 15 )
+cell_size = Vector2( 96, 96 )
+cell_custom_transform = Transform2D( 96, 0, 0, 96, 0, 0 )
+centered_textures = true
+format = 1
+tile_data = PoolIntArray( -327678, 4, 0, -327677, 4, 0, -262142, 4, 0, -262141, 4, 0, -196606, 4, 0, -196605, 4, 0, -196603, 3, 0, -196602, 3, 0, -196601, 3, 0, -131070, 4, 0, -131067, 3, 0, -131066, 3, 0, -131065, 3, 0, -65534, 4, 0, -65532, 3, 0, -65531, 3, 0, -65530, 3, 0, -65529, 3, 0, -65528, 3, 0, 4, 3, 0, 5, 3, 0, 6, 3, 0, 7, 3, 0, 8, 3, 0, 65541, 3, 0, 65542, 3, 0, 65543, 3, 0, 131077, 3, 0 )
+
 [node name="UI" type="CanvasLayer" parent="."]
 pause_mode = 2
 script = ExtResource( 18 )
-HotbarPath = NodePath("MarginContainer/HotbarContainer/CenterContainer/Hotbar")
+HotbarPath = NodePath("WindowMargin/HotbarContainer/CenterContainer/Hotbar")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI"]
+[node name="WindowMargin" type="MarginContainer" parent="UI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 20.0
@@ -200,67 +299,18 @@ mouse_filter = 1
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="HotbarContainer" type="VBoxContainer" parent="UI/MarginContainer"]
+[node name="HotbarContainer" type="VBoxContainer" parent="UI/WindowMargin"]
 margin_right = 1880.0
 margin_bottom = 1040.0
 alignment = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="UI/MarginContainer/HotbarContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="UI/WindowMargin/HotbarContainer"]
 margin_top = 945.0
 margin_right = 1880.0
 margin_bottom = 1040.0
+mouse_filter = 1
 
-[node name="HotbarBack" type="GridContainer" parent="UI/MarginContainer/HotbarContainer/CenterContainer"]
-visible = false
-margin_left = 595.0
-margin_right = 1284.0
-margin_bottom = 95.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-columns = 8
-
-[node name="SlotUI" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/CenterContainer/HotbarBack"]
-margin_right = 95.0
-margin_bottom = 95.0
-texture = ExtResource( 12 )
-
-[node name="TextureRect2" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/CenterContainer/HotbarBack"]
-margin_left = 99.0
-margin_right = 194.0
-margin_bottom = 95.0
-texture = ExtResource( 12 )
-
-[node name="TextureRect3" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/CenterContainer/HotbarBack"]
-margin_left = 198.0
-margin_right = 293.0
-margin_bottom = 95.0
-texture = ExtResource( 12 )
-
-[node name="TextureRect4" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/CenterContainer/HotbarBack"]
-margin_left = 297.0
-margin_right = 392.0
-margin_bottom = 95.0
-texture = ExtResource( 12 )
-
-[node name="TextureRect5" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/CenterContainer/HotbarBack"]
-margin_left = 396.0
-margin_right = 491.0
-margin_bottom = 95.0
-texture = ExtResource( 12 )
-
-[node name="TextureRect6" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/CenterContainer/HotbarBack"]
-margin_left = 495.0
-margin_right = 590.0
-margin_bottom = 95.0
-texture = ExtResource( 12 )
-
-[node name="TextureRect7" type="TextureRect" parent="UI/MarginContainer/HotbarContainer/CenterContainer/HotbarBack"]
-margin_left = 594.0
-margin_right = 689.0
-margin_bottom = 95.0
-texture = ExtResource( 12 )
-
-[node name="Hotbar" type="GridContainer" parent="UI/MarginContainer/HotbarContainer/CenterContainer"]
+[node name="Hotbar" type="GridContainer" parent="UI/WindowMargin/HotbarContainer/CenterContainer"]
 margin_left = 546.0
 margin_right = 1334.0
 margin_bottom = 95.0
@@ -269,32 +319,194 @@ size_flags_vertical = 4
 columns = 8
 script = ExtResource( 17 )
 
-[node name="SlotUI" parent="UI/MarginContainer/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="SlotUI" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
 
-[node name="SlotUI2" parent="UI/MarginContainer/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="SlotUI2" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
 margin_left = 99.0
 margin_right = 194.0
 
-[node name="SlotUI3" parent="UI/MarginContainer/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="SlotUI3" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
 margin_left = 198.0
 margin_right = 293.0
 
-[node name="SlotUI4" parent="UI/MarginContainer/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="SlotUI4" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
 margin_left = 297.0
 margin_right = 392.0
 
-[node name="SlotUI5" parent="UI/MarginContainer/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="SlotUI5" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
 margin_left = 396.0
 margin_right = 491.0
 
-[node name="SlotUI6" parent="UI/MarginContainer/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="SlotUI6" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
 margin_left = 495.0
 margin_right = 590.0
 
-[node name="SlotUI7" parent="UI/MarginContainer/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="SlotUI7" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
 margin_left = 594.0
 margin_right = 689.0
 
-[node name="SlotUI8" parent="UI/MarginContainer/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="SlotUI8" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
 margin_left = 693.0
 margin_right = 788.0
+
+[node name="InventoryContainer" type="NinePatchRect" parent="UI"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -267.5
+margin_top = -267.5
+margin_right = 267.5
+margin_bottom = 267.5
+mouse_filter = 1
+texture = ExtResource( 16 )
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 30
+script = ExtResource( 14 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/InventoryContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="GridContainer" type="GridContainer" parent="UI/InventoryContainer/CenterContainer"]
+margin_left = 22.0
+margin_top = 22.0
+margin_right = 513.0
+margin_bottom = 513.0
+columns = 5
+
+[node name="SlotUI" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+
+[node name="SlotUI2" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 99.0
+margin_right = 194.0
+
+[node name="SlotUI3" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 198.0
+margin_right = 293.0
+
+[node name="SlotUI4" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 297.0
+margin_right = 392.0
+
+[node name="SlotUI5" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 396.0
+margin_right = 491.0
+
+[node name="SlotUI6" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_top = 99.0
+margin_bottom = 194.0
+
+[node name="SlotUI7" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 99.0
+margin_top = 99.0
+margin_right = 194.0
+margin_bottom = 194.0
+
+[node name="SlotUI8" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 198.0
+margin_top = 99.0
+margin_right = 293.0
+margin_bottom = 194.0
+
+[node name="SlotUI9" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 297.0
+margin_top = 99.0
+margin_right = 392.0
+margin_bottom = 194.0
+
+[node name="SlotUI10" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 396.0
+margin_top = 99.0
+margin_right = 491.0
+margin_bottom = 194.0
+
+[node name="SlotUI11" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_top = 198.0
+margin_bottom = 293.0
+
+[node name="SlotUI12" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 99.0
+margin_top = 198.0
+margin_right = 194.0
+margin_bottom = 293.0
+
+[node name="SlotUI13" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 198.0
+margin_top = 198.0
+margin_right = 293.0
+margin_bottom = 293.0
+
+[node name="SlotUI14" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 297.0
+margin_top = 198.0
+margin_right = 392.0
+margin_bottom = 293.0
+
+[node name="SlotUI15" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 396.0
+margin_top = 198.0
+margin_right = 491.0
+margin_bottom = 293.0
+
+[node name="SlotUI16" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_top = 297.0
+margin_bottom = 392.0
+
+[node name="SlotUI17" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 99.0
+margin_top = 297.0
+margin_right = 194.0
+margin_bottom = 392.0
+
+[node name="SlotUI18" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 198.0
+margin_top = 297.0
+margin_right = 293.0
+margin_bottom = 392.0
+
+[node name="SlotUI19" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 297.0
+margin_top = 297.0
+margin_right = 392.0
+margin_bottom = 392.0
+
+[node name="SlotUI20" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 396.0
+margin_top = 297.0
+margin_right = 491.0
+margin_bottom = 392.0
+
+[node name="SlotUI21" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_top = 396.0
+margin_bottom = 491.0
+
+[node name="SlotUI22" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 99.0
+margin_top = 396.0
+margin_right = 194.0
+margin_bottom = 491.0
+
+[node name="SlotUI23" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 198.0
+margin_top = 396.0
+margin_right = 293.0
+margin_bottom = 491.0
+
+[node name="SlotUI24" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 297.0
+margin_top = 396.0
+margin_right = 392.0
+margin_bottom = 491.0
+
+[node name="SlotUI25" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
+margin_left = 396.0
+margin_top = 396.0
+margin_right = 491.0
+margin_bottom = 491.0

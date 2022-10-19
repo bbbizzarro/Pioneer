@@ -33,16 +33,16 @@ public class ItemUI : Control {
         if (_inventory != null) {
             var item = _inventory.Get(Position);
             if (item.IsEmpty()) {
-                Set(null, 0);
+                SetSlot(null, 0);
             }
             else {
-                Set(SpriteDB.Instance.GetSprite(item.ID), item.Count);
+                SetSlot(SpriteDB.Instance.GetSprite(item.ID), item.Count);
             }
         }
     }
 
     private void Clear() {
-        Set(null, "");
+        SetSlot(null, 0);
     }
 
     private void ConnectSignals() {
@@ -56,16 +56,7 @@ public class ItemUI : Control {
         _iconContainer = (IconUI)GetNode("IconUI");
     }
 
-    // Create the texture that follows the mouse when dragging.
-    private TextureRect CreatePreviewTexture() {
-        var dragTexture = new TextureRect();
-        dragTexture.Expand = true;
-        dragTexture.Texture = _textureRect.Texture;
-        dragTexture.RectSize = _textureRect.RectSize;
-        return dragTexture;
-    }
-
-    protected void Set(Texture texture, int count) {
+    protected void SetSlot(Texture texture, int count) {
         _textureRect.Texture = texture;
         if (count <= 1)
             _itemCount.Text = "";
@@ -83,6 +74,15 @@ public class ItemUI : Control {
 
     // Drag/Drop Helper Functions
     // --------------------------
+
+    // Create the texture that follows the mouse when dragging.
+    private TextureRect CreatePreviewTexture() {
+        var dragTexture = new TextureRect();
+        dragTexture.Expand = true;
+        dragTexture.Texture = _textureRect.Texture;
+        dragTexture.RectSize = _textureRect.RectSize;
+        return dragTexture;
+    }
 
     // Create the node in which to center the preview texture.
     private Control CreatePreviewNode(TextureRect previewTexture) {
@@ -109,11 +109,6 @@ public class ItemUI : Control {
     }
 
     private void SwapSlotDataWith(ItemUI origin) {
-        //Texture swapTexture = _textureRect.Texture;
-        //string swapCount = _itemCount.Text;
-        //_textureRect.Texture = origin.GetTexture();
-        //_itemCount.Text = origin.GetCount();
-        //origin.Set(swapTexture, swapCount);
         if (_inventory != null) {
             _inventory.Swap(Position, origin.Position);
             // Update both slots after swap
@@ -126,20 +121,29 @@ public class ItemUI : Control {
         return _inventory != null && !_inventory.Get(Position).IsEmpty();
     }
 
+    private void CreatePreview() {
+        var previewTexture = CreatePreviewTexture();
+        var previewNode = CreatePreviewNode(previewTexture);
+        SetDragPreview(previewNode);
+        //if (UI.Instance != null) {
+        //    GD.Print("Setting instance");
+        //    RemoveChild(previewNode);
+        //    UI.Instance.AddChild(previewNode);
+        //}
+    }
+
     // Drag/Drop Functions
     // -------------------
     public override object GetDragData(Vector2 position) {
         if (!CanDrag()) return null;
         CurrentDragSlot = this;
         _iconContainer.Hide();
-        var previewTexture = CreatePreviewTexture();
-        var previewNode = CreatePreviewNode(previewTexture);
-        SetDragPreview(previewNode);
+        CreatePreview();
         return CreateDragData();
     }
 
     public override bool CanDropData(Vector2 position, object data) {
-        return ValidateData(ReadDropData(data));
+        return _inventory != null && ValidateData(ReadDropData(data));
     }
 
     public override void DropData(Vector2 position, object data) {
@@ -150,13 +154,14 @@ public class ItemUI : Control {
 
     public override void _Notification(int what) {
         base._Notification(what);
+        // Show origin slot texture that was hidden during preview.
         if (what == NotificationDragEnd && CurrentDragSlot == this) {
             _iconContainer.Show();
             CurrentDragSlot = null;
         }
     }
 
-    // Handle Mouse Events
+    // Handle Input Events
     // -------------------
     private void HandleMouseEnter() {
         _iconContainer.ScaleIcon(1.2f);
