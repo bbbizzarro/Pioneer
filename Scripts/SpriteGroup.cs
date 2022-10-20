@@ -35,7 +35,6 @@ public class SpriteGroup : Node2D {
         var dir = GetDirectionToward(target);
         if (dir.x < 0) FlipH(false);
         else FlipH(true);
-        PositionHeld(target);
     }
 
     private Vector2 GetDirectionToward(Vector2 target) {
@@ -56,7 +55,7 @@ public class SpriteGroup : Node2D {
     public void AnimateIdle() {
         _animationPlayer.Play("Idle");
     }
-    private void PositionHeld(Vector2 target) {
-        Held.RotateTowardTarget(GlobalPosition, GetGlobalMousePosition());
+    public void PositionHeld(Vector2 target) {
+        Held.RotateTowardTarget(GlobalPosition, target);
     }
 }
