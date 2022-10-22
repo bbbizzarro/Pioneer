@@ -57,7 +57,6 @@ public class NPC : Character {
         _state.OnExit();
         _state = _states[state];
         _state.OnEnter();
-        GD.Print("State changed");
     }
 
     // Handle states

@@ -34,4 +34,12 @@ public class Held : Node2D {
     private Vector2 GetDirectionToward(Vector2 target) {
         return (target - GlobalPosition).Normalized();
     }
+
+    public void SetHeld(string itemID) {
+        _sprite.Texture = SpriteDB.Instance.GetSprite(itemID);
+    }
+
+    public void ClearHeld() {
+        _sprite.Texture = null;
+    }
 }

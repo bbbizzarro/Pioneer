@@ -20,8 +20,9 @@ public class Hotbar : GridContainer {
     }
 
     public void Set(Inventory inventory) {
+        int activeIndex = inventory.GetActiveSlot();
         for (int i = 0; i < _itemSlots.Count; ++i) {
-            _itemSlots[i].Initialize(i, inventory);
+            _itemSlots[i].Initialize(i, inventory, i == activeIndex);
         }
     }
 }

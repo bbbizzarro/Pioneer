@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class ItemUI : Control {
+public class ItemUI : TextureRect {
     protected static ItemUI CurrentDragSlot;
 
     // Node references
@@ -15,6 +15,11 @@ public class ItemUI : Control {
     // ---------
     protected int Position;
 
+    // Sprite Data
+    // -----------
+    [Export] private Texture ActiveSlotSprite;
+    [Export] private Texture InactiveSlotSprite;
+
     public override void _Ready() {
         base._Ready();
         GetReferences();
@@ -24,14 +29,24 @@ public class ItemUI : Control {
 
     // Initialization
     // --------------
-    public void Initialize(int position, Inventory inventory) {
+    public void Initialize(int position, Inventory inventory, bool isActive) {
         Position = position; _inventory = inventory;
         UpdateSlot();
+    }
+
+    private void SetPanelTexture() {
+        if (_inventory.GetActiveSlot() == Position) {
+            this.Texture = ActiveSlotSprite;
+        }
+        else {
+            this.Texture = InactiveSlotSprite;
+        }
     }
 
     public void UpdateSlot() {
         if (_inventory != null) {
             var item = _inventory.Get(Position);
+            SetPanelTexture();
             if (item.IsEmpty()) {
                 SetSlot(null, 0);
             }
@@ -114,6 +129,7 @@ public class ItemUI : Control {
             // Update both slots after swap
             UpdateSlot();
             origin.UpdateSlot();
+            _inventory.Update();
         }
     }
 

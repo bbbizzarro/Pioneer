@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Sprites/Atlas96x96/Axe.tres" type="Texture" id=1]
 [ext_resource path="res://Scripts/Held.cs" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Sprites/Atlas96x96/Backpack.tres" type="Texture" id=10]
 [ext_resource path="res://Scripts/HitArea.cs" type="Script" id=11]
 [ext_resource path="res://Sprites/Atlas96x96/Body.tres" type="Texture" id=12]
+[ext_resource path="res://Scenes/Interactor.cs" type="Script" id=13]
 
 [sub_resource type="Animation" id=1]
 resource_name = "AxeAttack"
@@ -68,6 +69,9 @@ radius = 19.2354
 
 [sub_resource type="CircleShape2D" id=14]
 radius = 135.558
+
+[sub_resource type="CircleShape2D" id=15]
+radius = 69.029
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 3 )
@@ -148,3 +152,12 @@ script = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sensor"]
 shape = SubResource( 14 )
+
+[node name="Interactor" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+script = ExtResource( 13 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactor"]
+shape = SubResource( 15 )

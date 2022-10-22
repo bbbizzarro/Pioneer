@@ -2,6 +2,7 @@ using Godot;
 using System;
 
 public class PickUp : KinematicBody2D {
+    // 0.6 1 30 8 9 0.2
     [Export] float Drag = 0.9f;
     [Export] float FlyTime = 1f;
     [Export] float GravityStrength = 30f;
@@ -15,15 +16,24 @@ public class PickUp : KinematicBody2D {
     Sprite _sprite;
     float _yLimit;
     float _currMoveSpeed = 1f;
+    string _itemID;
 
     public override void _Ready() {
         _rng.Randomize();
-        _sprite = (Sprite)GetNode("Sprite");
+        if (_sprite == null) {
+            _sprite = (Sprite)GetNode("Sprite");
+        }
         physics2D = new Physics2D(GravityStrength * Globals.PixelsPerUnit, Drag);
         physics2D.Set(GetYLimit(), GetInitVelocity(), GlobalPosition, FlyTime);
         //((Area2D)GetNode("Area2D")).Connect("area_entered", this, nameof(HandleTargeting));
         CallDeferred(nameof(InitializeArea2D));
         _yLimit = GetYLimit();
+    }
+
+    public void Initialize(string spriteID) {
+        _itemID = spriteID;
+        _sprite = (Sprite)GetNode("Sprite");
+        _sprite.Texture = SpriteDB.Instance.GetSprite(spriteID);
     }
 
     private void InitializeArea2D() {
@@ -67,7 +77,7 @@ public class PickUp : KinematicBody2D {
             MoveAndSlide(MoveSpeed * Globals.PixelsPerUnit * diff.Normalized());
             _sprite.Scale = new Vector2(newScale, newScale);
             if (diff.Length() < PickUpDistance * Globals.PixelsPerUnit) {
-                _target.HandleItemPickup("Log", 1);
+                _target.HandleItemPickup(_itemID, 1);
                 QueueFree();
             }
         }

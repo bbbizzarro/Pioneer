@@ -52,6 +52,7 @@ public class Harvestable : StaticBody2D {
 
     private void LoadPickUp() {
         PickUp pickUp = (PickUp)_pickUpScene.Instance();
+        pickUp.Initialize("Log");
         pickUp.GlobalPosition = GlobalPosition;
         CallDeferred(nameof(ParentChild), pickUp);
         //GetParent().AddChild(pickUp);

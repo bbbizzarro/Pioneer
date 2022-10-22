@@ -10,6 +10,7 @@ public class Inventory {
     int _capacity;
     int _count;
     ItemStack[] _items;
+    int _activeSlot;
 
     public Inventory(int capacity) {
         _capacity = capacity; 
@@ -17,6 +18,14 @@ public class Inventory {
         for (int i = 0; i < capacity; ++i) {
             _items[i] = ItemStack.EmptyStack();
         }
+    }
+
+    public void SetActiveSlot(int i) {
+        _activeSlot = i % _capacity;
+    }
+
+    public int GetActiveSlot() {
+        return _activeSlot;
     }
 
     public void Update() {
@@ -28,6 +37,10 @@ public class Inventory {
             if (itemStack.ID == name) return itemStack;
         }
         return ItemStack.EmptyStack();
+    }
+
+    public ItemStack GetActive() {
+        return Get(_activeSlot);
     }
 
     public ItemStack Get(int position) {
@@ -101,7 +114,6 @@ public class Inventory {
             var itemA = _items[positionA];
             _items[positionA] = _items[positionB];
             _items[positionB] = itemA;
-            GD.Print("Swap success.");
         }
     }
 
