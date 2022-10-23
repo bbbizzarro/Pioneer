@@ -1,11 +1,12 @@
 using Godot;
 using System;
 
-public class Market : Node2D {
+public class Market : Node2D, IEntity {
 
     Sprite _previewSprite;
     Interactable _interactable;
     PackedScene _pickUpScene = (PackedScene)ResourceLoader.Load("res://Scenes/PickUp.tscn");
+    event EntityEventHandler OnDestroyedEvent;
 
     public override void _Ready() {
         GetReferences();
@@ -24,7 +25,6 @@ public class Market : Node2D {
     }
 
     private void HandleSelling(Inventory inventory) {
-        GD.Print("selling");
         Inventory.ItemStack itemStack = inventory.GetActive();
         if (!itemStack.IsEmpty()) {
             inventory.Remove(itemStack.ID, 1);
@@ -52,5 +52,9 @@ public class Market : Node2D {
 
     private void HidePreview() {
         _previewSprite.Visible = false;
+    }
+
+    public void SubscribeToOnDestroyed(EntityEventHandler call) {
+        OnDestroyedEvent += call;
     }
 }

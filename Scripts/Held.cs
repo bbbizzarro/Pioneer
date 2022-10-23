@@ -8,6 +8,7 @@ public class Held : Node2D {
     [Export] float RotationOffset = 0;
     AnimationPlayer _animationPlayer;
     Sprite _sprite;
+    bool _isRotatable = true;
 
     public override void _Ready() {
         _sprite = (Sprite)GetNode("Sprite");
@@ -19,8 +20,14 @@ public class Held : Node2D {
         var v = target - source + Origin;
         float rotationOffset = ((v.x >= 0) ? 1 : -1) * RotationOffset;
         Position = Radius * v.Normalized().Rotated(rotationOffset) + Origin;
-        _sprite.Rotation = Mathf.Atan2(v.y, v.x) + Mathf.Pi + rotationOffset;
-        _sprite.FlipV = v.x >= 0;
+        if (_isRotatable) {
+            _sprite.Rotation = Mathf.Atan2(v.y, v.x) + Mathf.Pi + rotationOffset;
+            _sprite.FlipV = v.x >= 0;
+        }
+        else  {
+            _sprite.Rotation = 0;
+            _sprite.FlipV = false;
+        }
     }
 
     public void PlayAttackAnimation() {
@@ -37,6 +44,8 @@ public class Held : Node2D {
 
     public void SetHeld(string itemID) {
         _sprite.Texture = SpriteDB.Instance.GetSprite(itemID);
+        var item = ItemDB.Instance.GetItem(itemID);
+        _isRotatable = item.Type == ItemType.Tool;
     }
 
     public void ClearHeld() {

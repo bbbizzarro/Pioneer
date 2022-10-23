@@ -26,7 +26,6 @@ public class UI : CanvasLayer {
     }
 
     public void UpdateInventoryUI() {
-        GD.Print("Updating inventory.");
         _hotbar.Set(_inventory);
     }
 

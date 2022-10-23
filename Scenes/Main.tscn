@@ -1,11 +1,11 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/NPC.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Sprites/Atlas96x96/DebugSprite.tres" type="Texture" id=3]
+[ext_resource path="res://Scenes/Market.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Tree.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/Interactable.cs" type="Script" id=5]
-[ext_resource path="res://Scripts/Market.cs" type="Script" id=6]
+[ext_resource path="res://Scripts/World.cs" type="Script" id=5]
+[ext_resource path="res://Scripts/SceneDB.cs" type="Script" id=6]
 [ext_resource path="res://Scenes/ItemDB.cs" type="Script" id=7]
 [ext_resource path="res://Sprites/Atlas96x96.png" type="Texture" id=12]
 [ext_resource path="res://Scenes/SlotUI.tscn" type="PackedScene" id=13]
@@ -17,9 +17,6 @@
 [ext_resource path="res://Scripts/Game.cs" type="Script" id=19]
 [ext_resource path="res://Sprites/Atlas96x96/Particle.tres" type="Texture" id=20]
 [ext_resource path="res://Sprites/TileAtlas.png" type="Texture" id=21]
-
-[sub_resource type="CircleShape2D" id=16]
-radius = 36.2215
 
 [sub_resource type="TileSet" id=15]
 0/name = "Atlas96x96.png 0"
@@ -167,8 +164,12 @@ script = ExtResource( 15 )
 DBPath = "res://Sprites/Atlas96x96/"
 DefaultSprite = ExtResource( 20 )
 
+[node name="SceneDB" type="Node" parent="DBs"]
+script = ExtResource( 6 )
+
 [node name="World" type="YSort" parent="."]
 pause_mode = 1
+script = ExtResource( 5 )
 
 [node name="Floor" type="ParallaxBackground" parent="World"]
 
@@ -190,49 +191,8 @@ position = Vector2( 0, -384 )
 [node name="NPC" parent="World" instance=ExtResource( 2 )]
 position = Vector2( 843, -289 )
 
-[node name="Market" type="Node2D" parent="World"]
-position = Vector2( 288, -288 )
-script = ExtResource( 6 )
-
-[node name="Sprite" type="Sprite" parent="World/Market"]
-texture = ExtResource( 3 )
-
-[node name="Interactable" type="Area2D" parent="World/Market"]
-collision_layer = 8
-collision_mask = 0
-monitoring = false
-script = ExtResource( 5 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Market/Interactable"]
-position = Vector2( -1, 25 )
-shape = SubResource( 16 )
-
-[node name="PreviewSprite" type="Sprite" parent="World/Market"]
-visible = false
-position = Vector2( 0, -96 )
-texture = ExtResource( 20 )
-
-[node name="Market2" type="Node2D" parent="World"]
-position = Vector2( 382, -292 )
-script = ExtResource( 6 )
-
-[node name="Sprite" type="Sprite" parent="World/Market2"]
-texture = ExtResource( 3 )
-
-[node name="Interactable" type="Area2D" parent="World/Market2"]
-collision_layer = 8
-collision_mask = 0
-monitoring = false
-script = ExtResource( 5 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Market2/Interactable"]
-position = Vector2( -1, 25 )
-shape = SubResource( 16 )
-
-[node name="PreviewSprite" type="Sprite" parent="World/Market2"]
-visible = false
-position = Vector2( 0, -96 )
-texture = ExtResource( 20 )
+[node name="Market" parent="World" groups=["Block"] instance=ExtResource( 3 )]
+position = Vector2( 384, -288 )
 
 [node name="TileMaps" type="Node2D" parent="."]
 

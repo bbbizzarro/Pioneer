@@ -12,10 +12,6 @@ namespace Pioneer {
         public static float Mod(float x, float m) {
             return (x % m + m ) %m;
         }
-
-        public Vector2 GetDirectionToward(Vector2 source, Vector2 target) {
-            return (target - source).Normalized();
-        }
     }
 
     public class LongHash {

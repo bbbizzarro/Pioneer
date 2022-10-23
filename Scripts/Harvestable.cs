@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Harvestable : StaticBody2D {
+public class Harvestable : StaticBody2D, IEntity {
     HitBox _hitBox;
     Timer _timer;
     Sprite _sprite;
@@ -10,6 +10,8 @@ public class Harvestable : StaticBody2D {
     AnimationPlayer _animationPlayer;
     PackedScene _particleScene = (PackedScene)ResourceLoader.Load("res://Scenes/Particles.tscn");
     PackedScene _pickUpScene = (PackedScene)ResourceLoader.Load("res://Scenes/PickUp.tscn");
+    event EntityEventHandler OnDestroyedEvent;
+    event PositionEventHandler OnPositionChangedEvent; 
 
     public override void _Ready() {
         _hitBox = (HitBox)GetNode("HitBox");
@@ -24,7 +26,7 @@ public class Harvestable : StaticBody2D {
     }
 
     public void HandleHit(float value) {
-        GD.Print(String.Format("Hit with value of {0}", value));
+        //GD.Print(String.Format("Hit with value of {0}", value));
         _health.Increment(-value);
         //_spriteMaterial.SetShaderParam("amount", 0.8f);
         //_timer.Start(0.05f);
@@ -40,6 +42,11 @@ public class Harvestable : StaticBody2D {
         for (int i = 0; i < 3; ++i) {
             LoadPickUp();
         }
+        Destroy();
+    }
+
+    private void Destroy() {
+        OnDestroyedEvent?.Invoke(this);
         QueueFree();
     }
 
@@ -62,4 +69,11 @@ public class Harvestable : StaticBody2D {
         GetParent().AddChild(node);
     }
 
+    public void SubscribeToOnDestroyed(EntityEventHandler call) {
+        OnDestroyedEvent += call;
+    }
+
+    public void SubscribeToPositionChangedEvent(PositionEventHandler call) {
+        OnPositionChangedEvent += call;
+    }
 }

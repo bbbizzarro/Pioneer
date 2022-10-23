@@ -49,7 +49,7 @@ height = 22.0
 [sub_resource type="CircleShape2D" id=14]
 radius = 24.0208
 
-[node name="Tree" type="StaticBody2D"]
+[node name="Tree" type="StaticBody2D" groups=["Entity"]]
 position = Vector2( 0, -288 )
 script = ExtResource( 1 )
 
