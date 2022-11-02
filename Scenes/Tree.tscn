@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Harvestable.cs" type="Script" id=1]
 [ext_resource path="res://Sprites/Atlas96x96/Tree.tres" type="Texture" id=2]
-[ext_resource path="res://Shaders/Wind.gdshader" type="Shader" id=3]
+[ext_resource path="res://Shaders/WindMaterial.tres" type="Material" id=3]
 [ext_resource path="res://Scripts/HitBox.cs" type="Script" id=4]
-[ext_resource path="res://Sprites/perlin_noise.png" type="Texture" id=5]
 
 [sub_resource type="Animation" id=13]
 resource_name = "Hit"
@@ -33,15 +32,6 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 18.4 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="ShaderMaterial" id=10]
-shader = ExtResource( 3 )
-shader_param/amount = 0.0
-shader_param/strength = 8.0
-shader_param/ycutoff = 0.7
-shader_param/speed = 1.0
-shader_param/cell_size = 0.0933
-shader_param/noise_pattern = ExtResource( 5 )
-
 [sub_resource type="CapsuleShape2D" id=11]
 radius = 32.0
 height = 22.0
@@ -60,7 +50,7 @@ playback_speed = 8.0
 anims/Hit = SubResource( 13 )
 
 [node name="Sprite" type="Sprite" parent="SpriteGroup"]
-material = SubResource( 10 )
+material = ExtResource( 3 )
 texture = ExtResource( 2 )
 
 [node name="HitBox" type="Area2D" parent="." groups=["Targetable"]]

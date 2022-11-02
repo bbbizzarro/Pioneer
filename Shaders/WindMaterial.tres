@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[ext_resource path="res://Shaders/Wind.gdshader" type="Shader" id=1]
+[ext_resource path="res://Sprites/perlin_noise.png" type="Texture" id=2]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/amount = 0.0
+shader_param/strength = 8.0
+shader_param/ycutoff = 0.7
+shader_param/speed = 1.0
+shader_param/cell_size = 0.0933
+shader_param/noise_pattern = ExtResource( 2 )

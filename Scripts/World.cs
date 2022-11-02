@@ -9,7 +9,7 @@ public class World : YSort {
 
     public override void _Ready() {
         CollectChildNodes();
-        InstanceScene("Market");
+        //InstanceScene("Market");
     }
 
     public void InstanceScene(string ID) {
