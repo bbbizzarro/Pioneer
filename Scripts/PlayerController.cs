@@ -57,7 +57,10 @@ public class PlayerController : Character {
             return;
         }
         HandleMovement(Input.GetVector("Left", "Right", "Up", "Down"));
-        if (Input.IsActionPressed("Attack")) HandleAttack();
+
+        //if (Input.IsActionPressed("Attack")) HandleAttack();
+        if (Input.IsActionJustPressed("Attack")) HandleAttack(GetGlobalMousePosition());
+
         FaceToward(GetGlobalMousePosition());
         PositionHeld(GetGlobalMousePosition());
         HandleHotbarInput();
@@ -84,4 +87,5 @@ public class PlayerController : Character {
         Inventory.SetActiveSlot(slot);
         Inventory.Update();
     }
+
 }

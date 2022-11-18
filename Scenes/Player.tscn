@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Sprites/Atlas96x96/Axe.tres" type="Texture" id=1]
 [ext_resource path="res://Scripts/Held.cs" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Scripts/HitArea.cs" type="Script" id=11]
 [ext_resource path="res://Sprites/Atlas96x96/Body.tres" type="Texture" id=12]
 [ext_resource path="res://Scenes/Interactor.cs" type="Script" id=13]
+[ext_resource path="res://Sprites/Atlas96x96/Circle.tres" type="Texture" id=14]
 
 [sub_resource type="Animation" id=1]
 resource_name = "AxeAttack"
@@ -73,9 +74,9 @@ radius = 135.558
 [sub_resource type="CircleShape2D" id=15]
 radius = 69.029
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="KinematicBody2D" groups=["Player"]]
 script = ExtResource( 3 )
-_speed = 3.5
+_speed = 1.5
 
 [node name="SpriteGroup" type="Node2D" parent="."]
 script = ExtResource( 5 )
@@ -111,7 +112,7 @@ Origin = Vector2( 0, -20 )
 Radius = 44.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SpriteGroup/Held"]
-playback_speed = 4.0
+playback_speed = 8.0
 anims/AxeAttack = SubResource( 1 )
 anims/HeldAttack = SubResource( 2 )
 anims/HeldIdle = SubResource( 3 )
@@ -130,6 +131,8 @@ script = ExtResource( 11 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteGroup/Held/Sprite/HitArea"]
 position = Vector2( 0, 4 )
 shape = SubResource( 12 )
+
+[node name="Timer" type="Timer" parent="SpriteGroup/Held/Sprite/HitArea"]
 
 [node name="Head" type="Node2D" parent="SpriteGroup" groups=["Flippable"]]
 
@@ -161,3 +164,7 @@ script = ExtResource( 13 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactor"]
 shape = SubResource( 15 )
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 14 )
