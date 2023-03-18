@@ -12,8 +12,8 @@
 [ext_resource path="res://Sprites/Atlas96x96/Backpack.tres" type="Texture" id=10]
 [ext_resource path="res://Scripts/HitArea.cs" type="Script" id=11]
 [ext_resource path="res://Sprites/Atlas96x96/Body.tres" type="Texture" id=12]
-[ext_resource path="res://Scenes/Interactor.cs" type="Script" id=13]
-[ext_resource path="res://Sprites/Atlas96x96/Circle.tres" type="Texture" id=14]
+[ext_resource path="res://Scripts/Interactor.cs" type="Script" id=13]
+[ext_resource path="res://Sprites/Atlas16x16/Character.tres" type="Texture" id=14]
 
 [sub_resource type="Animation" id=1]
 resource_name = "AxeAttack"
@@ -66,17 +66,17 @@ tracks/0/keys = {
 radius = 19.2354
 
 [sub_resource type="CircleShape2D" id=13]
-radius = 19.2354
+radius = 19.0263
 
 [sub_resource type="CircleShape2D" id=14]
 radius = 135.558
 
 [sub_resource type="CircleShape2D" id=15]
-radius = 69.029
+radius = 97.0
 
 [node name="Player" type="KinematicBody2D" groups=["Player"]]
 script = ExtResource( 3 )
-_speed = 1.5
+speed = 2.0
 
 [node name="SpriteGroup" type="Node2D" parent="."]
 script = ExtResource( 5 )
@@ -140,15 +140,11 @@ shape = SubResource( 12 )
 position = Vector2( -8, -20 )
 texture = ExtResource( 4 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-smoothing_enabled = true
-
 [node name="WorldCollisionBox" type="CollisionShape2D" parent="."]
-position = Vector2( -2, 10 )
 shape = SubResource( 13 )
 
 [node name="Sensor" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 4
 script = ExtResource( 7 )
@@ -157,14 +153,23 @@ script = ExtResource( 7 )
 shape = SubResource( 14 )
 
 [node name="Interactor" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 8
+collision_layer = 8
+collision_mask = 0
 monitorable = false
 script = ExtResource( 13 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactor"]
 shape = SubResource( 15 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
+smoothing_enabled = true
+smoothing_speed = 10.0
+
+[node name="Sprites" type="Node2D" parent="."]
 visible = false
+
+[node name="Character" type="Sprite" parent="Sprites"]
 texture = ExtResource( 14 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+anim_player = NodePath("../SpriteGroup/AnimationPlayer")

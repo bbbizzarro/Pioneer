@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Sprites/Atlas96x96/SmallChar.tres" type="Texture" id=1]
+[ext_resource path="res://Scripts/PartyMember.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/PartyGroup.cs" type="Script" id=3]
+[ext_resource path="res://Scripts/AnimSprite.cs" type="Script" id=4]
+
+[node name="PartyGroup" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Members" type="YSort" parent="."]
+
+[node name="PartyMember" type="KinematicBody2D" parent="Members" groups=["PartyMember"]]
+position = Vector2( -16, -16 )
+collision_layer = 16
+collision_mask = 16
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="Members/PartyMember"]
+texture = ExtResource( 1 )
+script = ExtResource( 4 )
+
+[node name="PartyMember2" type="KinematicBody2D" parent="Members" groups=["PartyMember"]]
+position = Vector2( 16, -32 )
+collision_layer = 16
+collision_mask = 16
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="Members/PartyMember2"]
+texture = ExtResource( 1 )
+script = ExtResource( 4 )
+
+[node name="PartyMember3" type="KinematicBody2D" parent="Members" groups=["PartyMember"]]
+position = Vector2( 16, 0 )
+collision_layer = 16
+collision_mask = 16
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="Members/PartyMember3"]
+texture = ExtResource( 1 )
+script = ExtResource( 4 )

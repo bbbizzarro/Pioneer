@@ -1,23 +1,26 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Sprites/Tilesets/Main.tres" type="TileSet" id=2]
-[ext_resource path="res://Scenes/ExitPoint.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scripts/World.cs" type="Script" id=5]
+[ext_resource path="res://Scripts/GameUI.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Main.cs" type="Script" id=2]
+[ext_resource path="res://Scenes/PartyBase.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Fonts/Varela_Round/ValeraRound.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Sprites/Atlas96x96/BigPanel.tres" type="Texture" id=5]
 [ext_resource path="res://Scripts/SceneDB.cs" type="Script" id=6]
-[ext_resource path="res://Scenes/ItemDB.cs" type="Script" id=7]
-[ext_resource path="res://Scenes/SlotUI.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Scripts/InventoryContainer.cs" type="Script" id=14]
+[ext_resource path="res://Scripts/ItemDB.cs" type="Script" id=7]
+[ext_resource path="res://Scripts/WorldMap.cs" type="Script" id=11]
+[ext_resource path="res://Scripts/LocationButton.cs" type="Script" id=13]
 [ext_resource path="res://Scripts/SpriteDB.cs" type="Script" id=15]
-[ext_resource path="res://Sprites/Atlas96x96/Panel.tres" type="Texture" id=16]
-[ext_resource path="res://Scripts/Hotbar.cs" type="Script" id=17]
-[ext_resource path="res://Scripts/UI.cs" type="Script" id=18]
-[ext_resource path="res://Scripts/Game.cs" type="Script" id=19]
 [ext_resource path="res://Sprites/Atlas96x96/Particle.tres" type="Texture" id=20]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.772549, 0.0823529, 0.0823529, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.709804, 0.368627, 0.368627, 1 )
 
 [node name="Main" type="Node2D"]
 pause_mode = 2
-script = ExtResource( 19 )
+script = ExtResource( 2 )
 
 [node name="DBs" type="Node" parent="."]
 
@@ -32,264 +35,88 @@ DefaultSprite = ExtResource( 20 )
 [node name="SceneDB" type="Node" parent="DBs"]
 script = ExtResource( 6 )
 
-[node name="World" type="YSort" parent="."]
-pause_mode = 1
-script = ExtResource( 5 )
+[node name="WorldMap" type="YSort" parent="."]
+script = ExtResource( 11 )
 
-[node name="Floor" type="ParallaxBackground" parent="World"]
+[node name="Camera2D" type="Camera2D" parent="WorldMap" groups=["Permanent"]]
+position = Vector2( -232, 136 )
+current = true
+smoothing_enabled = true
 
-[node name="ColorRect" type="ColorRect" parent="World/Floor"]
+[node name="Player" parent="WorldMap" groups=["Permanent", "Player"] instance=ExtResource( 3 )]
+
+[node name="Background" type="ParallaxBackground" parent="."]
+
+[node name="Color" type="ColorRect" parent="Background"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 color = Color( 0.94902, 0.772549, 0.6, 1 )
 
-[node name="Player" parent="World" instance=ExtResource( 1 )]
-_speed = 2.0
-
-[node name="TileMaps" type="Node2D" parent="."]
-position = Vector2( -48, -48 )
-z_index = -100
-
-[node name="Walls" type="TileMap" parent="TileMaps"]
-tile_set = ExtResource( 2 )
-cell_size = Vector2( 96, 96 )
-cell_custom_transform = Transform2D( 96, 0, 0, 96, 0, 0 )
-centered_textures = true
-format = 1
-
-[node name="Floor" type="TileMap" parent="TileMaps"]
-tile_set = ExtResource( 2 )
-cell_size = Vector2( 96, 96 )
-cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
-cell_tile_origin = 1
-format = 1
-
 [node name="UI" type="CanvasLayer" parent="."]
-pause_mode = 2
-script = ExtResource( 18 )
-HotbarPath = NodePath("WindowMargin/HotbarContainer/CenterContainer/Hotbar")
+script = ExtResource( 1 )
+HealthNode = NodePath("VBoxContainer/Health")
 
-[node name="WindowMargin" type="MarginContainer" parent="UI"]
+[node name="WinScreen" type="Label" parent="UI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = -20.0
-margin_bottom = -20.0
-mouse_filter = 1
-size_flags_horizontal = 0
-size_flags_vertical = 0
+custom_fonts/font = ExtResource( 4 )
+text = "You Win"
+align = 1
+valign = 1
 
-[node name="HotbarContainer" type="VBoxContainer" parent="UI/WindowMargin"]
-margin_right = 1880.0
-margin_bottom = 1040.0
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 alignment = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="UI/WindowMargin/HotbarContainer"]
-margin_top = 945.0
-margin_right = 1880.0
-margin_bottom = 1040.0
-mouse_filter = 1
+[node name="GridContainer" type="GridContainer" parent="UI/VBoxContainer"]
+margin_top = 916.0
+margin_right = 1920.0
+margin_bottom = 1037.0
+columns = 3
 
-[node name="Hotbar" type="GridContainer" parent="UI/WindowMargin/HotbarContainer/CenterContainer"]
-margin_left = 546.0
-margin_right = 1334.0
-margin_bottom = 95.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-columns = 8
-script = ExtResource( 17 )
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/GridContainer"]
+margin_right = 121.0
+margin_bottom = 121.0
+texture = ExtResource( 5 )
 
-[node name="SlotUI" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
+[node name="TextureRect2" type="TextureRect" parent="UI/VBoxContainer/GridContainer"]
+margin_left = 125.0
+margin_right = 246.0
+margin_bottom = 121.0
+texture = ExtResource( 5 )
 
-[node name="SlotUI2" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
-margin_left = 99.0
-margin_right = 194.0
+[node name="TextureRect3" type="TextureRect" parent="UI/VBoxContainer/GridContainer"]
+margin_left = 250.0
+margin_right = 371.0
+margin_bottom = 121.0
+texture = ExtResource( 5 )
 
-[node name="SlotUI3" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
-margin_left = 198.0
-margin_right = 293.0
+[node name="Panel" type="Panel" parent="UI/VBoxContainer"]
+margin_top = 1041.0
+margin_right = 1920.0
+margin_bottom = 1041.0
 
-[node name="SlotUI4" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
-margin_left = 297.0
-margin_right = 392.0
+[node name="Health" type="ProgressBar" parent="UI/VBoxContainer"]
+margin_top = 1045.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+custom_fonts/font = ExtResource( 4 )
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+value = 100.0
 
-[node name="SlotUI5" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
-margin_left = 396.0
-margin_right = 491.0
-
-[node name="SlotUI6" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
-margin_left = 495.0
-margin_right = 590.0
-
-[node name="SlotUI7" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
-margin_left = 594.0
-margin_right = 689.0
-
-[node name="SlotUI8" parent="UI/WindowMargin/HotbarContainer/CenterContainer/Hotbar" instance=ExtResource( 13 )]
-margin_left = 693.0
-margin_right = 788.0
-
-[node name="InventoryContainer" type="NinePatchRect" parent="UI"]
-visible = false
+[node name="AttackButton" type="TextureButton" parent="UI"]
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.496
 anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -267.5
-margin_top = -267.5
-margin_right = 267.5
-margin_bottom = 267.5
-mouse_filter = 1
-texture = ExtResource( 16 )
-patch_margin_left = 30
-patch_margin_top = 30
-patch_margin_right = 30
-patch_margin_bottom = 30
-script = ExtResource( 14 )
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="CenterContainer" type="CenterContainer" parent="UI/InventoryContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="GridContainer" type="GridContainer" parent="UI/InventoryContainer/CenterContainer"]
-margin_left = 22.0
-margin_top = 22.0
-margin_right = 513.0
-margin_bottom = 513.0
-columns = 5
-
-[node name="SlotUI" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-
-[node name="SlotUI2" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 99.0
-margin_right = 194.0
-
-[node name="SlotUI3" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 198.0
-margin_right = 293.0
-
-[node name="SlotUI4" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 297.0
-margin_right = 392.0
-
-[node name="SlotUI5" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 396.0
-margin_right = 491.0
-
-[node name="SlotUI6" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_top = 99.0
-margin_bottom = 194.0
-
-[node name="SlotUI7" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 99.0
-margin_top = 99.0
-margin_right = 194.0
-margin_bottom = 194.0
-
-[node name="SlotUI8" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 198.0
-margin_top = 99.0
-margin_right = 293.0
-margin_bottom = 194.0
-
-[node name="SlotUI9" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 297.0
-margin_top = 99.0
-margin_right = 392.0
-margin_bottom = 194.0
-
-[node name="SlotUI10" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 396.0
-margin_top = 99.0
-margin_right = 491.0
-margin_bottom = 194.0
-
-[node name="SlotUI11" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_top = 198.0
-margin_bottom = 293.0
-
-[node name="SlotUI12" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 99.0
-margin_top = 198.0
-margin_right = 194.0
-margin_bottom = 293.0
-
-[node name="SlotUI13" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 198.0
-margin_top = 198.0
-margin_right = 293.0
-margin_bottom = 293.0
-
-[node name="SlotUI14" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 297.0
-margin_top = 198.0
-margin_right = 392.0
-margin_bottom = 293.0
-
-[node name="SlotUI15" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 396.0
-margin_top = 198.0
-margin_right = 491.0
-margin_bottom = 293.0
-
-[node name="SlotUI16" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_top = 297.0
-margin_bottom = 392.0
-
-[node name="SlotUI17" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 99.0
-margin_top = 297.0
-margin_right = 194.0
-margin_bottom = 392.0
-
-[node name="SlotUI18" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 198.0
-margin_top = 297.0
-margin_right = 293.0
-margin_bottom = 392.0
-
-[node name="SlotUI19" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 297.0
-margin_top = 297.0
-margin_right = 392.0
-margin_bottom = 392.0
-
-[node name="SlotUI20" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 396.0
-margin_top = 297.0
-margin_right = 491.0
-margin_bottom = 392.0
-
-[node name="SlotUI21" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_top = 396.0
-margin_bottom = 491.0
-
-[node name="SlotUI22" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 99.0
-margin_top = 396.0
-margin_right = 194.0
-margin_bottom = 491.0
-
-[node name="SlotUI23" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 198.0
-margin_top = 396.0
-margin_right = 293.0
-margin_bottom = 491.0
-
-[node name="SlotUI24" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 297.0
-margin_top = 396.0
-margin_right = 392.0
-margin_bottom = 491.0
-
-[node name="SlotUI25" parent="UI/InventoryContainer/CenterContainer/GridContainer" instance=ExtResource( 13 )]
-margin_left = 396.0
-margin_top = 396.0
-margin_right = 491.0
-margin_bottom = 491.0
-
-[node name="ExitPoint" parent="." instance=ExtResource( 3 )]
+anchor_bottom = 0.496
+margin_left = 96.0
+margin_top = 48.3199
+margin_right = 167.0
+margin_bottom = 135.32
+texture_normal = ExtResource( 5 )
+stretch_mode = 4
+script = ExtResource( 13 )

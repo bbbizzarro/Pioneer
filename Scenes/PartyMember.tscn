@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Sprites/Atlas96x96/SmallChar.tres" type="Texture" id=1]
+[ext_resource path="res://Scripts/PartyMember.cs" type="Script" id=2]
+[ext_resource path="res://Animations/Idle.tres" type="Animation" id=3]
+[ext_resource path="res://Sprites/Atlas96x96/Shadow.tres" type="Texture" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Run"
+length = 0.75
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Pivot:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5, 0.65, 0.75 ),
+"transitions": PoolRealArray( 1, 0.574349, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.9, 1.1 ), Vector2( 1, 1 ), Vector2( 1.2, 0.8 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Pivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5, 0.65, 0.75 ),
+"transitions": PoolRealArray( 1, 16, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -11 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[node name="PartyMember" type="KinematicBody2D" groups=["PartyMember"]]
+position = Vector2( -16, -16 )
+collision_layer = 16
+collision_mask = 16
+script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Idle = ExtResource( 3 )
+anims/Run = SubResource( 1 )
+
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0, -3 )
+z_index = -1
+texture = ExtResource( 4 )
+
+[node name="Pivot" type="Node2D" parent="."]
+scale = Vector2( 0.98322, 1.01678 )
+
+[node name="Sprite" type="Sprite" parent="Pivot"]
+position = Vector2( -5, -26 )
+texture = ExtResource( 1 )

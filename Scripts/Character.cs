@@ -4,30 +4,30 @@ using System;
 public class Character : KinematicBody2D {
 
     protected SpriteGroup _spriteGroup;
-    Vector2 _velocity;
-    [Export] float _speed;
-    bool _attackQueued;
-    Vector2 _queuedDirection;
-    Impulse _impulse;
+    Vector2 velocity;
+    [Export] float speed;
+    bool attackQueued;
+    Vector2 queuedDirection;
+    Impulse impulse;
 
     public override void _Ready() {
         base._Ready();
         _spriteGroup = (SpriteGroup)GetNode("SpriteGroup");
-        _impulse = new Impulse(50f);
+        impulse = new Impulse(50f);
     }
 
     public override void _Process(float delta) {
         base._Process(delta);
         HandleAnimations();
-        _impulse.Update(delta);
+        impulse.Update(delta);
     }
 
     protected void HandleMovement(Vector2 direction) {
         float modifier = (_spriteGroup.IsAnimatingAttack()) ? 0.3f : 1f;
         //!//
         modifier = 1f;
-        _velocity = modifier * _speed * Globals.PixelsPerUnit * direction;
-        MoveAndSlide(_velocity);
+        velocity = modifier * speed * Globals.PixelsPerUnit * direction;
+        MoveAndSlide(velocity);
         //if (_impulse.Velocity.Length() > 0.1f) {
         //    MoveAndSlide(_impulse.Velocity);
         //}
@@ -37,13 +37,13 @@ public class Character : KinematicBody2D {
     }
 
     private void HandleAnimations() {
-        if (_velocity.Length() > 0) 
+        if (velocity.Length() > 0) 
             _spriteGroup.AnimateRun();
         else 
             _spriteGroup.AnimateIdle();
-        if (_attackQueued && !_spriteGroup.IsAnimatingAttack()) {
-            HandleAttack(_queuedDirection);
-            _attackQueued = false;
+        if (attackQueued && !_spriteGroup.IsAnimatingAttack()) {
+            HandleAttack(queuedDirection);
+            attackQueued = false;
             //_queuedDirection = Vector2.Zero;
         }
     }
@@ -51,12 +51,12 @@ public class Character : KinematicBody2D {
     protected void HandleAttack(Vector2 target) {
         Vector2 direction = (target - GlobalPosition).Normalized();
         if (_spriteGroup.IsAnimatingAttack()) {
-            _attackQueued = true;
-            _queuedDirection = direction;
+            attackQueued = true;
+            queuedDirection = direction;
             return;
         }
         _spriteGroup.AnimateAttack();
-        _impulse.Set(5f, direction);
+        impulse.Set(5f, direction);
     }
 
     protected void FaceToward(Vector2 target) {
