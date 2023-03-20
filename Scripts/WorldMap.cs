@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public delegate void MapEvent();
 public class WorldMap : Node2D {
@@ -14,6 +15,7 @@ public class WorldMap : Node2D {
 	List<Location> locations = new List<Location>();
 	Location finalLocation;
 	State currentState = State.Travel;
+	Cursor cursor;
 
 	public enum State { 
 		Travel,
@@ -52,6 +54,7 @@ public class WorldMap : Node2D {
 
 	public override void _Ready() {
 		GD.Print("Generating world.");
+		cursor = (Cursor)GetNode("Cursor");
 		InitializePlayer();
 		GenerateWorld();
 	}
@@ -119,16 +122,34 @@ public class WorldMap : Node2D {
 		}
 	}
 
-	private Stack<int> RandomSequence(int start, int end) {
+	private Stack<Vector2> RandomSequence(int xLow, int xHigh, int yLow, int yHigh) {
 		var rng = new RandomNumberGenerator();
 		rng.Randomize();
-		int size = end - start;
-		List<int> sequence = new List<int>(size);
-		for (int i = 0; i < size; ++i) {
-			sequence.Add(i + start);
+		int size = (xHigh + 1 - xLow) * (yHigh + 1 - yLow);
+		List<Vector2> sequence = new List<Vector2>(size);
+		for (int x = xLow; x <= xHigh; ++x) {
+			for (int y = yLow; y <= yHigh; ++y) {
+				sequence.Add(new Vector2(x, y));
+			}
 		}
-		for (int i = 0; i < size - 2; ++i) {
-			int r = rng.RandiRange(i, size - 1);
+		for (int i = 0; i < sequence.Count - 2; ++i) {
+			int r = rng.RandiRange(0, size - 1);
+			Vector2 temp = sequence[i];
+			sequence[i] = sequence[r];
+			sequence[r] = temp;
+		}
+		return new Stack<Vector2>(sequence);
+	}
+
+	private Stack<int> RandomSequence(int from, int to, int step) {
+		var rng = new RandomNumberGenerator();
+		rng.Randomize();
+		List<int> sequence = new List<int>();
+		for (int x = from; x <= to; x+= step) {
+			sequence.Add(x);
+		}
+		for (int i = 0; i < sequence.Count - 2; ++i) {
+			int r = rng.RandiRange(0, sequence.Count - 1);
 			int temp = sequence[i];
 			sequence[i] = sequence[r];
 			sequence[r] = temp;
@@ -136,36 +157,114 @@ public class WorldMap : Node2D {
 		return new Stack<int>(sequence);
 	}
 
-	private void GenerateWorld() {
-		int numberOfLocations = 3;
-		int mapSize = 2;
+	private Stack<Edge> RandomEdgeSequence(IEnumerable<Edge> edges) {
 		var rng = new RandomNumberGenerator();
 		rng.Randomize();
-		var sequenceX = RandomSequence(-mapSize, mapSize);
-		var sequenceY = RandomSequence(-mapSize, mapSize);
+		List<Edge> sequence = new List<Edge>(edges);
+		for (int i = 0; i < sequence.Count - 2; ++i) {
+			int r = rng.RandiRange(0, sequence.Count - 1);
+			Edge temp = sequence[i];
+			sequence[i] = sequence[r];
+			sequence[r] = temp;
+		}
+		return new Stack<Edge>(sequence);
+
+	}
+
+	private void GenerateWorld() {
+		int mapHeight = 8;
+		int mapWidth = 16;
+		int numberOfLocations = 20;
+		var rng = new RandomNumberGenerator();
+		rng.Randomize();
 
 		locations = new List<Location>();
+		locations.Add(CreateLocation(new Vector2(-(mapWidth + 2)/2 * Globals.PixelsPerUnit, 0)));
+		locations.Add(CreateLocation(new Vector2((mapWidth + 2)/2 * Globals.PixelsPerUnit, 0)));
+		finalLocation = locations[1];
 
-		for (int i = 0; i < numberOfLocations; ++i) {
-			int randX = sequenceX.Pop() * Globals.PixelsPerUnit;
-			int randY = sequenceY.Pop() * Globals.PixelsPerUnit;
-			Vector2 position = new Vector2(randX, randY);
-			var location = (Location)InitializeNode("Location");
-			locations.Add(location);
-			location.GlobalPosition = position;
-			location.Initialize(this);
+		int randomOffsetX = Mathf.RoundToInt(0.3f * Globals.PixelsPerUnit);
+		int randomOffsetY = Mathf.RoundToInt(0.1f * Globals.PixelsPerUnit);
+
+		var columns = new List<List<Location>>();
+		int step = 2;
+		int alternate = 0;
+		float ySquish = 3f/4f;
+		//float ySquish = 4f/5f;
+		int prev = 0;
+		int randCount;
+		for (int i = 1; i < mapWidth; i+=step) {
+			columns.Add(new List<Location>());
+			var randSequence = RandomSequence(-(mapHeight + alternate % 2)/ 2, (mapHeight - alternate % 2)/2, 2);
+			alternate += 1;
+			if (prev == 3) {
+				randCount = rng.RandiRange(1, 2);
+			}
+			else {
+				randCount = rng.RandiRange(1, 3);
+			}
+			prev = randCount;
+			for (int c = 0; c < randCount; ++c) {
+				var l = CreateLocation(new Vector2(
+					Globals.PixelsPerUnit * (i - mapWidth / 2) + rng.RandiRange(-randomOffsetX, randomOffsetX), 
+					Globals.PixelsPerUnit * ySquish * randSequence.Pop() + rng.RandiRange(-randomOffsetY, randomOffsetY)));
+				locations.Add(l);
+				columns[i/step].Add(l);
+			}
 		}
-		finalLocation = locations[2];
+
+		for (int i = 0; i < columns.Count; ++i) {
+			var orderedColumn = new List<Location>(columns[i].OrderBy(loc => loc.GlobalPosition.y));
+			columns[i] = orderedColumn;
+		}
+
+		for (int c = 0; c < columns.Count - 1; ++c) {
+			int lastRight = 0;
+			for (int l = 0; l < columns[c].Count; ++l) {
+				if (l == columns[c].Count - 1) {
+					for (int r = lastRight; r < columns[c+1].Count; ++r) {
+						//if ((columns[c+1][r].GlobalPosition - columns[c][l].GlobalPosition).Length() <= 5 * Globals.PixelsPerUnit)
+							AddEdge(columns[c][l], columns[c+1][r]);
+					}
+				}
+				else {
+					for (int n = 0; n < rng.RandiRange(1, 2); ++n) {
+						if (!columns[c][l].IsAdjacentsTo(columns[c+1][lastRight])) {
+								//&& (columns[c+1][lastRight].GlobalPosition - columns[c][l].GlobalPosition).Length() <= 5 * Globals.PixelsPerUnit) {
+							AddEdge(columns[c][l], columns[c+1][lastRight]);
+							if (n > 0) {
+								lastRight = Mathf.Clamp(lastRight + 1, 0, columns[c+1].Count-1);
+							}
+						}
+					}
+				}
+			}
+		}	
+
+		foreach (var loc in columns[0]) {
+			AddEdge(locations[0], loc);
+		}
+		foreach (var loc in columns[columns.Count - 1]) {
+			AddEdge(loc, locations[1]);
+		}
 
 		//Party enemy = (Party)InitializeNode("PartyBase");
 		//enemy.Initialize(this, 30);
 		//locations[1].AddEnemy(enemy);
 
-		AddEdge(locations[0], locations[1]);
-		AddEdge(locations[1], locations[2]);
+		//AddEdge(locations[0], locations[1]);
 
 		player.Reset();
 		player.SetLocation(locations[0]);
+	}
+
+	private Location CreateLocation(Vector2 position) {
+		var location = (Location)InitializeNode("Location");
+		location.GlobalPosition = position;
+		location.Initialize(this);
+		location.LocationSelected += cursor.SetCursor;
+		location.LocationDeselected += cursor.UnsetCursor;
+		return location;
 	}
 
 	private Node InitializeNode(string name) {
@@ -180,6 +279,12 @@ public class WorldMap : Node2D {
 		a.AddAdjacent(b);
 		b.AddAdjacent(a);
 		return e;
+	}
+
+	private void AddEdge(Edge edge) {
+		RenderEdge(edge);
+		edge.Start.AddAdjacent(edge.End);
+		edge.End.AddAdjacent(edge.Start);
 	}
 
 	private void RenderEdge(Edge edge) { 

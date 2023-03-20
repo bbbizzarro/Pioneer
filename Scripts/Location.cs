@@ -3,9 +3,13 @@ using System;
 using System.Collections.Generic;
 
 public delegate void LocationClickHandler(Location location);
-public class Location : Node2D {
+public delegate void LocationEventHandler(Location location);
+public class Location : Node2D, IPositional {
 	List<Location> adjacents = new List<Location>();
+	HashSet<IPositional> connections = new HashSet<IPositional>();
 	public event LocationClickHandler LocationClickEvent;
+	public event LocationEventHandler LocationSelected;
+	public event LocationEventHandler LocationDeselected;
 	Area2D area;
 	Sprite sprite;
 	public Party Enemy;
@@ -33,6 +37,9 @@ public class Location : Node2D {
 		}
 	}
 
+	private void RandomizeProps() {
+	}
+
 	public void AddEnemy(Party party) {
 		Enemy = party;
 		party.SetLocation(this);
@@ -51,11 +58,13 @@ public class Location : Node2D {
 
 	public void HandleMouseEnter() {
 		CurrentSelected = this;
+		LocationSelected?.Invoke(this);
 		//sprite.Scale = new Vector2(1.2f, 1.2f);
 	}
 	public void HandleMouseExit() {
 		if (CurrentSelected == this) {
 			CurrentSelected = null;
+			LocationDeselected?.Invoke(this);
 		}
 		//sprite.Scale = Vector2.One;
 	}
@@ -69,5 +78,13 @@ public class Location : Node2D {
 
 	public void OnMouseClick() {
 		LocationClickEvent?.Invoke(this);
+	}
+
+    public void Connect(IPositional p) {
+        throw new NotImplementedException();
+    }
+
+	public Vector2 GetPos() {
+		return GlobalPosition;
 	}
 }

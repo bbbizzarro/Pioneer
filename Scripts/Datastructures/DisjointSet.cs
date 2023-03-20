@@ -2,42 +2,41 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+//https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+
 public class DisjointSet<T> {
-    HashSet<T> forest;
-    HashSet<Vertex> sets;
+    Dictionary<T, T> sets;
 
     public DisjointSet() {
-        forest = new HashSet<T>();
-        sets = new HashSet<Vertex>();
+        sets = new Dictionary<T, T>();
 	}
 
     public void MakeSet(T value) { 
-        if (!forest.Contains(value)) {
-            sets.Add(new Vertex(value));
+        if (!sets.ContainsKey(value)) {
+            sets.Add(value, value);
 		}
 	}
 
-    public Vertex Find(Vertex vertex) { 
-        if (vertex.Parent != vertex) {
-            vertex.Parent = Find(vertex.Parent);
-            return vertex.Parent;
+    public T Find(T value) { 
+        if (!sets.ContainsKey(value)) {
+            return value;
+        }
+        if (!sets[value].Equals(value)) {
+            sets[value] = Find(sets[value]);
+            return sets[value];
 		}
         else {
-            return vertex;
+            return value;
 		}
 	}
 
-    public class Vertex {
-        public Vertex Parent;
-        public T Value;
+    public void Union(T x, T y) {
+        x = Find(x);
+        y = Find(y);
 
-        public Vertex(T value) {
-            Parent = this;  Value = value;
-		}
+        if (x.Equals(y)) return;
 
-        public Vertex(Vertex parent, T value) {
-            Parent = parent; Value = value;
-		}
-	}
+        sets[y] = x;
+    }
 }
 
