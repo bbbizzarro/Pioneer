@@ -1,0 +1,25 @@
+# TO DO
+
+- [X] Location reveals
+- [X] Location prop randomization
+- [X] Location animations during generation
+- [ ] Location prop animations when moused over
+- [ ] End UI with world reset functionality
+- [X] Cursor
+- [X] Map generation
+- [X] Dashed paths (rotating sprites along line?)
+- [ ] Splash screen
+- [ ] 6 more static prop arts assets
+- [ ] 3 character art assets
+- [ ] Sound effects and music
+- [ ] Background graphics (map on wooden table)
+- [ ] Cinematic camera
+- [ ] Location bases
+---
+- [ ] Foliage wind shader
+- [X] fix character shadows
+- [ ] Clouds
+- [ ] Birds
+- [ ] JUICE
+- [ ] Obstacle Avoidance
+- [ ] Board-mouse interaction like in MTG-A

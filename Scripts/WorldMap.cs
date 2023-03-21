@@ -98,6 +98,8 @@ public class WorldMap : Node2D {
 	}
 
 	public void HandlePlayerArrival(Location location) { 
+		location.RevealNearbyLocations();
+
 		if (location == finalLocation) {
 			PlayerAtFinalDest?.Invoke();
 			Reset();
@@ -179,11 +181,13 @@ public class WorldMap : Node2D {
 		rng.Randomize();
 
 		locations = new List<Location>();
+		// Create start location.
 		locations.Add(CreateLocation(new Vector2(-(mapWidth + 2)/2 * Globals.PixelsPerUnit, 0)));
+		// Create end location.
 		locations.Add(CreateLocation(new Vector2((mapWidth + 2)/2 * Globals.PixelsPerUnit, 0)));
 		finalLocation = locations[1];
 
-		int randomOffsetX = Mathf.RoundToInt(0.3f * Globals.PixelsPerUnit);
+		int randomOffsetX = Mathf.RoundToInt(0.2f * Globals.PixelsPerUnit);
 		int randomOffsetY = Mathf.RoundToInt(0.1f * Globals.PixelsPerUnit);
 
 		var columns = new List<List<Location>>();
@@ -224,14 +228,16 @@ public class WorldMap : Node2D {
 				if (l == columns[c].Count - 1) {
 					for (int r = lastRight; r < columns[c+1].Count; ++r) {
 						//if ((columns[c+1][r].GlobalPosition - columns[c][l].GlobalPosition).Length() <= 5 * Globals.PixelsPerUnit)
-							AddEdge(columns[c][l], columns[c+1][r]);
+							//AddEdge(columns[c][l], columns[c+1][r]);
+							AddPath(columns[c][l], columns[c+1][r]);
 					}
 				}
 				else {
 					for (int n = 0; n < rng.RandiRange(1, 2); ++n) {
 						if (!columns[c][l].IsAdjacentsTo(columns[c+1][lastRight])) {
 								//&& (columns[c+1][lastRight].GlobalPosition - columns[c][l].GlobalPosition).Length() <= 5 * Globals.PixelsPerUnit) {
-							AddEdge(columns[c][l], columns[c+1][lastRight]);
+							//AddEdge(columns[c][l], columns[c+1][lastRight]);
+							AddPath(columns[c][l], columns[c+1][lastRight]);
 							if (n > 0) {
 								lastRight = Mathf.Clamp(lastRight + 1, 0, columns[c+1].Count-1);
 							}
@@ -242,10 +248,10 @@ public class WorldMap : Node2D {
 		}	
 
 		foreach (var loc in columns[0]) {
-			AddEdge(locations[0], loc);
+			AddPath(locations[0], loc);
 		}
 		foreach (var loc in columns[columns.Count - 1]) {
-			AddEdge(loc, locations[1]);
+			AddPath(loc, locations[1]);
 		}
 
 		//Party enemy = (Party)InitializeNode("PartyBase");
@@ -256,6 +262,7 @@ public class WorldMap : Node2D {
 
 		player.Reset();
 		player.SetLocation(locations[0]);
+		locations[0].RevealNearbyLocations();
 	}
 
 	private Location CreateLocation(Vector2 position) {
@@ -271,6 +278,11 @@ public class WorldMap : Node2D {
 		var node = SceneDB.Instance.GetScene(name).Instance();
 		AddChild(node);
 		return node;
+	}
+
+	private void AddPath(Location a, Location b) {
+		var path = (Path)SceneDB.Instance.Create("Line", this);
+		path.Connect(a, b);
 	}
 
 	private Edge AddEdge(Location a, Location b) {

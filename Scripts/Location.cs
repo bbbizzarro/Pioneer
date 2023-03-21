@@ -6,6 +6,7 @@ public delegate void LocationClickHandler(Location location);
 public delegate void LocationEventHandler(Location location);
 public class Location : Node2D, IPositional {
 	List<Location> adjacents = new List<Location>();
+	List<Path> paths = new List<Path>();
 	HashSet<IPositional> connections = new HashSet<IPositional>();
 	public event LocationClickHandler LocationClickEvent;
 	public event LocationEventHandler LocationSelected;
@@ -14,7 +15,9 @@ public class Location : Node2D, IPositional {
 	Sprite sprite;
 	public Party Enemy;
 
-	List<Node2D> props = new List<Node2D>();
+	List<Prop> props = new List<Prop>();
+	public bool isHidden {private set; get; }
+	Timer timer;
 
 	public static Location CurrentSelected;
 
@@ -22,18 +25,73 @@ public class Location : Node2D, IPositional {
 		area = (Area2D)GetNode("Area2D");
 		area.Connect("mouse_entered", this, nameof(HandleMouseEnter));
 		area.Connect("mouse_exited", this, nameof(HandleMouseExit));
+		timer = (Timer)GetNode("Timer");
+		timer.Connect("timeout", this, nameof(RevealProps));
 		//sprite = (Sprite)GetNode("Sprite");
+	}
+
+	public void AddPath(Path path) {
+		paths.Add(path);
+		if (path.Start != this) 
+			adjacents.Add(path.Start);
+		else 
+			adjacents.Add(path.End);
+		
+	}
+
+	public void RevealNearbyLocations() {
+		Reveal(this);
+		foreach (var adj in adjacents) {
+			adj.Reveal(this);
+		}
+		foreach (var path in paths) {
+			path.Reveal(this);
+		}
 	}
 
 	public void Initialize(WorldMap worldMap) {
 		foreach (Node node in GetChildren()){
 			if (node.IsInGroup("Prop")) {
-				var prop = (Node2D)node; 
+				var prop = (Prop)node; 
 				props.Add(prop);
 				RemoveChild(prop);
 				worldMap.AddChild(prop);
 				prop.GlobalPosition += GlobalPosition;
 			}
+		}
+		props[0].SetSpriteByCategory("Large");
+		props[1].SetSpriteByCategory("Small");
+		props[2].SetSpriteByCategory("Small");
+		HideLocation();
+	}
+
+	public void Reveal(Location location) {
+		if (!isHidden) return;
+		isHidden = false;
+		if (timer == null) 
+			RevealProps();
+		else {
+			float distance = (location.GlobalPosition - GlobalPosition).Length();
+			if (distance == 0) 
+				RevealProps();
+			else {
+				float delay = 0.08f * distance/ Globals.PixelsPerUnit;
+				timer.Start(delay);
+			}
+		}
+	}
+
+	private void RevealProps() {
+		foreach (var prop in props) {
+			prop.Reveal();
+		}
+	}
+
+	public void HideLocation() {
+		if (isHidden) return;
+		isHidden = true;
+		foreach (var prop in props) {
+			prop.HideProp();
 		}
 	}
 
@@ -57,6 +115,7 @@ public class Location : Node2D, IPositional {
 	}
 
 	public void HandleMouseEnter() {
+		//if (isHidden) return;
 		CurrentSelected = this;
 		LocationSelected?.Invoke(this);
 		//sprite.Scale = new Vector2(1.2f, 1.2f);

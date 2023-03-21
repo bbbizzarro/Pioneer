@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Sprites/Atlas96x96/Tree.tres" type="Texture" id=1]
+[ext_resource path="res://Scripts/Prop.cs" type="Script" id=2]
+[ext_resource path="res://Animations/PropReveal.tres" type="Animation" id=4]
+
+[node name="LocationProp" type="Node2D" groups=["Prop"]]
+position = Vector2( 0, -24 )
+script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 2.0
+anims/PropReveal = ExtResource( 4 )
+
+[node name="Pivot" type="Node2D" parent="."]
+scale = Vector2( 1.5, 1e-05 )
+
+[node name="Sprite" type="Sprite" parent="Pivot"]
+position = Vector2( 0, -64 )
+texture = ExtResource( 1 )

@@ -26,6 +26,13 @@ public class SceneDB : Node {
         }
     }
 
+    public Node Create(string ID, Node parent) {
+        PackedScene packedScene = GetScene(ID);
+        Node scene = packedScene.Instance();
+        parent.AddChild(scene);
+        return scene;
+    }
+
     //public Node InstanceScene(string ID) {
     //    if (_db.ContainsKey(ID)) {
     //        return _db[ID].Instance();

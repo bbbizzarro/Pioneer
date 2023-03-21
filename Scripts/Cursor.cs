@@ -14,6 +14,7 @@ public class Cursor : Node2D {
     }
 
     public void SetCursor(Location location) {
+        if (location.isHidden) return;
         GlobalPosition = location.GlobalPosition;
         Show();
     }

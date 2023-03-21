@@ -46,12 +46,11 @@ anims/Idle = ExtResource( 3 )
 anims/Run = SubResource( 1 )
 
 [node name="Shadow" type="Sprite" parent="."]
-position = Vector2( 0, -3 )
-z_index = -1
+position = Vector2( -6, -3 )
+z_index = -4
 texture = ExtResource( 4 )
 
 [node name="Pivot" type="Node2D" parent="."]
-scale = Vector2( 0.98322, 1.01678 )
 
 [node name="Sprite" type="Sprite" parent="Pivot"]
 position = Vector2( -5, -26 )
