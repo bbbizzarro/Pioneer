@@ -32,6 +32,10 @@ public class Party : KinematicBody2D {
 		PartyModifiedEvent?.Invoke(this);
 	}
 
+	public bool IsMoving() {
+		return stopwatch.Advance(0);
+	}
+
 
 	public void Initialize(WorldMap worldMap, int maxHealth) {
 		MaxHealth = maxHealth;
@@ -85,6 +89,7 @@ public class Party : KinematicBody2D {
 		target = null;
 		GlobalPosition = current.GlobalPosition;
 		PartyArrivedAtLocation?.Invoke(current);
+		isMoving = false;
 	}
 
 	public void Destroy() {
@@ -102,6 +107,7 @@ public class Party : KinematicBody2D {
 	public void SetTarget(Location location) {
 		target = location;
 		stopwatch.Start(GetTimeToTarget(location.GlobalPosition));
+		isMoving = true;
 		SetPartyMemberPositions(location.GlobalPosition);
 	}
 

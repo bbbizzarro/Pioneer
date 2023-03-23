@@ -10,11 +10,24 @@
 - [X] Dashed paths (rotating sprites along line?)
 - [ ] Splash screen
 - [ ] 6 more static prop arts assets
+	- [ ] Castle
+	- [ ] Hill
+	- [ ] Rock
+	- [ ] Hut
+	- [ ] Flower
+	- [ ] Mushroom
 - [ ] 3 character art assets
+	- [ ] Cleric
+	- [ ] Knight
+	- [ ] Wizard
 - [ ] Sound effects and music
+	- [ ] Reveal
+	- [ ] Running
+	- [ ] Mouse over
+	- [ ] Music
 - [ ] Background graphics (map on wooden table)
-- [ ] Cinematic camera
-- [ ] Location bases
+- [X] Cinematic camera
+- [X] Location bases
 ---
 - [ ] Foliage wind shader
 - [X] fix character shadows

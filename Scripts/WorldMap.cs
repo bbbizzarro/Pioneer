@@ -53,17 +53,22 @@ public class WorldMap : Node2D {
 	}
 
 	public override void _Ready() {
+	}
+
+	public void Initialize() {
 		GD.Print("Generating world.");
 		cursor = (Cursor)GetNode("Cursor");
 		InitializePlayer();
 		GenerateWorld();
 	}
+
 	public Party GetPlayer() {
 		return player;
 	}
 
 	private void InitializePlayer() { 
 		player = (Party)GetNode("Player");
+		player.Show();
 		player.Initialize(this, 100);
 		player.PartyArrivedAtLocation += HandlePlayerArrival;
 	}
@@ -73,6 +78,9 @@ public class WorldMap : Node2D {
 	}
 
 	public override void _Process(float delta) {
+		if (Input.IsActionJustPressed("Debug")) {
+			Audio.Instance.Play("Pop");
+		}
 		switch (currentState) {
 			case State.Travel:
 					HandleInput();

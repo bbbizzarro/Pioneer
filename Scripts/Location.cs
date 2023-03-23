@@ -82,6 +82,7 @@ public class Location : Node2D, IPositional {
 	}
 
 	private void RevealProps() {
+		Audio.Instance.Play("Pop");
 		foreach (var prop in props) {
 			prop.Reveal();
 		}
